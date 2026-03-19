@@ -5,10 +5,10 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/Test/dynamodb": {
+    "/api/devices": {
       "get": {
         "tags": [
-          "Test"
+          "Devices"
         ],
         "responses": {
           "200": {
@@ -17,10 +17,32 @@
         }
       }
     },
-    "/api/Test/devices": {
+    "/api/devices/{id}": {
       "get": {
         "tags": [
-          "Test"
+          "Devices"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/devices/test": {
+      "get": {
+        "tags": [
+          "Devices"
         ],
         "responses": {
           "200": {

@@ -27,7 +27,6 @@ F:\My Documents\GitHub\MockAPI-en-Unit-Manager-\HvacMockApi\HvacMockApi\obj\Debu
 F:\My Documents\GitHub\MockAPI-en-Unit-Manager-\HvacMockApi\HvacMockApi\obj\Debug\net8.0\staticwebassets.build.json.cache
 F:\My Documents\GitHub\MockAPI-en-Unit-Manager-\HvacMockApi\HvacMockApi\obj\Debug\net8.0\staticwebassets.development.json
 F:\My Documents\GitHub\MockAPI-en-Unit-Manager-\HvacMockApi\HvacMockApi\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-F:\My Documents\GitHub\MockAPI-en-Unit-Manager-\HvacMockApi\HvacMockApi\obj\Debug\net8.0\swae.build.ex.cache
 F:\My Documents\GitHub\MockAPI-en-Unit-Manager-\HvacMockApi\HvacMockApi\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 F:\My Documents\GitHub\MockAPI-en-Unit-Manager-\HvacMockApi\HvacMockApi\obj\Debug\net8.0\HvacMock.5BD188AD.Up2Date
 F:\My Documents\GitHub\MockAPI-en-Unit-Manager-\HvacMockApi\HvacMockApi\obj\Debug\net8.0\HvacMockApi.dll

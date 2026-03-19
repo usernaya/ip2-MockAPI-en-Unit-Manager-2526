@@ -1,8 +1,8 @@
 [
   {
-    "ContainingType": "HvacMockApi.Controllers.TestController",
+    "ContainingType": "HvacMockApi.Controllers.DevicesController",
     "Method": "GetAllDevices",
-    "RelativePath": "api/Test/devices",
+    "RelativePath": "api/devices",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -10,9 +10,25 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "HvacMockApi.Controllers.TestController",
-    "Method": "CheckDynamoDb",
-    "RelativePath": "api/Test/dynamodb",
+    "ContainingType": "HvacMockApi.Controllers.DevicesController",
+    "Method": "GetDeviceById",
+    "RelativePath": "api/devices/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HvacMockApi.Controllers.DevicesController",
+    "Method": "Test",
+    "RelativePath": "api/devices/test",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
