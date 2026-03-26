@@ -36,3 +36,41 @@ F:\My Documents\GitHub\MockAPI-en-Unit-Manager-\HvacMockApi\HvacMockApi\obj\Debu
 F:\My Documents\GitHub\MockAPI-en-Unit-Manager-\HvacMockApi\HvacMockApi\obj\Debug\net8.0\ref\HvacMockApi.dll
 F:\My Documents\GitHub\MockAPI-en-Unit-Manager-\HvacMockApi\HvacMockApi\bin\Debug\net8.0\AWSSDK.Core.dll
 F:\My Documents\GitHub\MockAPI-en-Unit-Manager-\HvacMockApi\HvacMockApi\bin\Debug\net8.0\AWSSDK.DynamoDBv2.dll
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\bin\Debug\net8.0\appsettings.Development.json
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\bin\Debug\net8.0\appsettings.json
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\bin\Debug\net8.0\HvacMockApi.staticwebassets.endpoints.json
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\bin\Debug\net8.0\HvacMockApi.exe
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\bin\Debug\net8.0\HvacMockApi.deps.json
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\bin\Debug\net8.0\HvacMockApi.runtimeconfig.json
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\bin\Debug\net8.0\HvacMockApi.dll
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\bin\Debug\net8.0\HvacMockApi.pdb
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\bin\Debug\net8.0\AWSSDK.Core.dll
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\bin\Debug\net8.0\AWSSDK.DynamoDBv2.dll
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\bin\Debug\net8.0\Microsoft.OpenApi.dll
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\HvacMockApi.csproj.AssemblyReference.cache
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\rpswa.dswa.cache.json
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\HvacMockApi.GeneratedMSBuildEditorConfig.editorconfig
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\HvacMockApi.AssemblyInfoInputs.cache
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\HvacMockApi.AssemblyInfo.cs
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\HvacMockApi.csproj.CoreCompileInputs.cache
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\HvacMockApi.MvcApplicationPartsAssemblyInfo.cs
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\HvacMockApi.MvcApplicationPartsAssemblyInfo.cache
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\HvacMockApi.sourcelink.json
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\rjimswa.dswa.cache.json
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\scopedcss\bundle\HvacMockApi.styles.css
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\staticwebassets.build.json
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\staticwebassets.build.json.cache
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\staticwebassets.development.json
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\HvacMock.5BD188AD.Up2Date
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\HvacMockApi.dll
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\refint\HvacMockApi.dll
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\HvacMockApi.pdb
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\HvacMockApi.genruntimeconfig.cache
+F:\Odisee\MockAPI-en-Unit-Manager\HvacMockApi\HvacMockApi\obj\Debug\net8.0\ref\HvacMockApi.dll
