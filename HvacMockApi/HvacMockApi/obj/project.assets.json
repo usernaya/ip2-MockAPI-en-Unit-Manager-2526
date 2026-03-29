@@ -532,19 +532,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\bunyy\\.nuget\\packages\\": {}
+    "C:\\Users\\Aya\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Odisee\\MockAPI-en-Unit-Manager\\HvacMockApi\\HvacMockApi\\HvacMockApi.csproj",
+      "projectUniqueName": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\HvacMockApi\\HvacMockApi\\HvacMockApi.csproj",
       "projectName": "HvacMockApi",
-      "projectPath": "F:\\Odisee\\MockAPI-en-Unit-Manager\\HvacMockApi\\HvacMockApi\\HvacMockApi.csproj",
-      "packagesPath": "C:\\Users\\bunyy\\.nuget\\packages\\",
-      "outputPath": "F:\\Odisee\\MockAPI-en-Unit-Manager\\HvacMockApi\\HvacMockApi\\obj\\",
+      "projectPath": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\HvacMockApi\\HvacMockApi\\HvacMockApi.csproj",
+      "packagesPath": "C:\\Users\\Aya\\.nuget\\packages\\",
+      "outputPath": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\HvacMockApi\\HvacMockApi\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\bunyy\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Aya\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -604,7 +609,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.307/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
