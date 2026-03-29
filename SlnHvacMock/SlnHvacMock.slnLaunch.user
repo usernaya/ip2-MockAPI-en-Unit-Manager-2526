@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "HvacMock.MockApi\\HvacMock.MockApi.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "HvacMock.UI\\HvacMock.UI.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

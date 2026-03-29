@@ -1,0 +1,52 @@
+﻿@model HvacMock.UI.Models.Device
+
+<div class="container mt-4">
+
+    <a asp-action="Index" class="btn btn-secondary mb-3">← Terug</a>
+
+    <h2 class="mb-4">Device Details</h2>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <p><strong>ID:</strong> @Model.Id</p>
+            <p>
+                <strong>Status:</strong>
+                <span class="badge @(Model.Status == "on" ? "bg-success" : "bg-danger")">
+                    @Model.Status
+                </span>
+            </p>
+            <p><strong>Mode:</strong> @Model.Mode</p>
+            <p><strong>Temperature:</strong> @Model.Temperature °C</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            Waarde aanpassen
+        </div>
+        <div class="card-body">
+            <form asp-action="Patch" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+
+                <div class="mb-3">
+                    <label class="form-label">Veld</label>
+                    <select name="field" class="form-select">
+                        <option value="status">Status</option>
+                        <option value="mode">Mode</option>
+                        <option value="temperature">Temperature</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Nieuwe waarde</label>
+                    <input type="text" name="value" class="form-control" />
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">
+                    Update
+                </button>
+            </form>
+        </div>
+    </div>
+
+</div>
