@@ -9,7 +9,7 @@ namespace HvacMock.UI.Controllers
     {
         private readonly IHttpClientFactory _factory;
 
-        // aanpassen als poort verandert - kan ook in appsettings.json maar we doen het later wel goed
+        // aanpassen als poort verandert, kan ook in appsettings.json maar we doen het later wel goed
         private const string ApiBase = "https://localhost:7049/v1";
 
         public DevicesController(IHttpClientFactory factory)
@@ -33,12 +33,10 @@ namespace HvacMock.UI.Controllers
         {
             var client = _factory.CreateClient();
 
-            var json = await client.GetStringAsync($"{ApiBase}/gateway-devices");
+            var json = await client.GetStringAsync($"{ApiBase}/gateway-devices/{id}");
 
-            var devices = JsonSerializer.Deserialize<List<Device>>(json,
+            var device = JsonSerializer.Deserialize<Device>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-            var device = devices.FirstOrDefault(d => d.Id == id);
 
             return View(device);
         }

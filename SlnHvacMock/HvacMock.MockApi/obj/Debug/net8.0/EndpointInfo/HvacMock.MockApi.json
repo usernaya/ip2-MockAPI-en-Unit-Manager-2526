@@ -17,6 +17,28 @@
         }
       }
     },
+    "/v1/gateway-devices/{id}": {
+      "get": {
+        "tags": [
+          "Devices"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/v1/gateway-devices/{id}/{field}": {
       "patch": {
         "tags": [

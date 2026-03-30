@@ -3,7 +3,7 @@ using Amazon.DynamoDBv2.Model;
 
 namespace HvacMock.MockApi.Repositories
 {
-    public class DeviceRepository
+    public class DeviceRepository : IDeviceRepository
     {
         private readonly IAmazonDynamoDB _db;
         private const string Table = "Devices";
@@ -21,6 +21,20 @@ namespace HvacMock.MockApi.Repositories
             });
 
             return response.Items;
+        }
+
+        public async Task<Dictionary<string, AttributeValue>?> GetByIdAsync(string id)
+        {
+            var response = await _db.GetItemAsync(new GetItemRequest
+            {
+                TableName = Table,
+                Key = new Dictionary<string, AttributeValue>
+                {
+                    { "deviceId", new AttributeValue { S = id } }
+                }
+            });
+
+            return response.Item.Count > 0 ? response.Item : null;
         }
 
         public async Task UpdateFieldAsync(string id, string field, string value)

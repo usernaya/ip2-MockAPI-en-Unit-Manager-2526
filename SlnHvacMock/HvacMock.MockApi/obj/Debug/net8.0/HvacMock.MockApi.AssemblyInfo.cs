@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HvacMock.MockApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+52c2ef9e26e6d363c3446c17cb5efc90babb097a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a248391e5534a4b440d26890ecbefa3cf8f7e306")]
 [assembly: System.Reflection.AssemblyProductAttribute("HvacMock.MockApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HvacMock.MockApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

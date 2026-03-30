@@ -32,3 +32,4 @@ F:\My Documents\GitHub\MockAPI-en-Unit-Manager-\SlnHvacMock\HvacMock.UI\obj\Debu
 F:\My Documents\GitHub\MockAPI-en-Unit-Manager-\SlnHvacMock\HvacMock.UI\obj\Debug\net8.0\HvacMock.UI.pdb
 F:\My Documents\GitHub\MockAPI-en-Unit-Manager-\SlnHvacMock\HvacMock.UI\obj\Debug\net8.0\HvacMock.UI.genruntimeconfig.cache
 F:\My Documents\GitHub\MockAPI-en-Unit-Manager-\SlnHvacMock\HvacMock.UI\obj\Debug\net8.0\ref\HvacMock.UI.dll
+F:\My Documents\GitHub\MockAPI-en-Unit-Manager-\SlnHvacMock\HvacMock.UI\bin\Debug\net8.0\wwwroot\js\devices.js

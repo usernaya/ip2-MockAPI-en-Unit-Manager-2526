@@ -8,9 +8,9 @@ namespace HvacMock.MockApi.Controllers
     [Route("v1/gateway-devices")]
     public class DevicesController : ControllerBase
     {
-        private readonly DeviceService _service;
+        private readonly IDeviceService _service;
 
-        public DevicesController(DeviceService service)
+        public DevicesController(IDeviceService service)
         {
             _service = service;
         }
@@ -18,19 +18,38 @@ namespace HvacMock.MockApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _service.GetAllAsync());
+            var devices = await _service.GetAllAsync();
+            return Ok(devices);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return BadRequest();
+
+            var device = await _service.GetByIdAsync(id);
+
+            if (device == null)
+                return NotFound();
+
+            return Ok(device);
         }
 
         [HttpPatch("{id}/{field}")]
         public async Task<IActionResult> Patch(string id, string field, [FromBody] PatchRequest request)
         {
+            if (string.IsNullOrWhiteSpace(id))
+                return BadRequest("Invalid id");
+
             if (request == null || string.IsNullOrWhiteSpace(request.Value))
-                return BadRequest();
+                return BadRequest("Invalid value");
 
             if (field != "status" && field != "mode" && field != "temperature")
                 return BadRequest("Invalid field");
 
             await _service.PatchAsync(id, field, request.Value);
+
             return Ok();
         }
     }

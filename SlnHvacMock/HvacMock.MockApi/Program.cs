@@ -21,8 +21,10 @@ var client = new AmazonDynamoDBClient(
 );
 
 builder.Services.AddSingleton<IAmazonDynamoDB>(client);
-builder.Services.AddScoped<DeviceRepository>();
-builder.Services.AddScoped<DeviceService>();
+
+// dependency injection
+builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
+builder.Services.AddScoped<IDeviceService, DeviceService>();
 
 builder.Services.AddCors(options =>
 {
