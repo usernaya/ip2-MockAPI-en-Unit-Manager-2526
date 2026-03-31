@@ -10,12 +10,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // DynamoDB
-var config = new AmazonDynamoDBConfig
+AmazonDynamoDBConfig config = new AmazonDynamoDBConfig
 {
     ServiceURL = builder.Configuration["DynamoDb:ServiceURL"]
 };
 
-var client = new AmazonDynamoDBClient(
+AmazonDynamoDBClient client = new AmazonDynamoDBClient(
     new BasicAWSCredentials("dummy", "dummy"),
     config
 );

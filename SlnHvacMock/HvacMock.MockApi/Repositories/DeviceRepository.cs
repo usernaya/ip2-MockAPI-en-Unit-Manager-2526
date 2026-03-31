@@ -15,7 +15,7 @@ namespace HvacMock.MockApi.Repositories
 
         public async Task<List<Dictionary<string, AttributeValue>>> GetAllAsync()
         {
-            var response = await _db.ScanAsync(new ScanRequest
+            ScanResponse response = await _db.ScanAsync(new ScanRequest
             {
                 TableName = Table
             });
@@ -25,7 +25,7 @@ namespace HvacMock.MockApi.Repositories
 
         public async Task<Dictionary<string, AttributeValue>?> GetByIdAsync(string id)
         {
-            var response = await _db.GetItemAsync(new GetItemRequest
+            GetItemResponse response = await _db.GetItemAsync(new GetItemRequest
             {
                 TableName = Table,
                 Key = new Dictionary<string, AttributeValue>
@@ -39,12 +39,12 @@ namespace HvacMock.MockApi.Repositories
 
         public async Task UpdateFieldAsync(string id, string field, string value)
         {
-            var key = new Dictionary<string, AttributeValue>
+            Dictionary<string, AttributeValue> key = new Dictionary<string, AttributeValue>
             {
                 { "deviceId", new AttributeValue { S = id } }
             };
 
-            var request = new UpdateItemRequest
+            UpdateItemRequest request = new UpdateItemRequest
             {
                 TableName = Table,
                 Key = key,

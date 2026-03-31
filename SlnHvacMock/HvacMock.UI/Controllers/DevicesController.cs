@@ -19,11 +19,11 @@ namespace HvacMock.UI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var client = _factory.CreateClient();
+            HttpClient client = _factory.CreateClient();
 
-            var json = await client.GetStringAsync($"{ApiBase}/gateway-devices");
+            string json = await client.GetStringAsync($"{ApiBase}/gateway-devices");
 
-            var devices = JsonSerializer.Deserialize<List<Device>>(json,
+            List<Device> devices = JsonSerializer.Deserialize<List<Device>>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             return View(devices);
@@ -31,11 +31,11 @@ namespace HvacMock.UI.Controllers
 
         public async Task<IActionResult> Details(string id)
         {
-            var client = _factory.CreateClient();
+            HttpClient client = _factory.CreateClient();
 
-            var json = await client.GetStringAsync($"{ApiBase}/gateway-devices/{id}");
+            string json = await client.GetStringAsync($"{ApiBase}/gateway-devices/{id}");
 
-            var device = JsonSerializer.Deserialize<Device>(json,
+            Device device = JsonSerializer.Deserialize<Device>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             return View(device);
@@ -44,10 +44,10 @@ namespace HvacMock.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Patch(string id, string field, string value)
         {
-            var client = _factory.CreateClient();
+            HttpClient client = _factory.CreateClient();
 
-            var body = JsonSerializer.Serialize(new { value });
-            var content = new StringContent(body, Encoding.UTF8, "application/json");
+            string body = JsonSerializer.Serialize(new { value });
+            StringContent content = new StringContent(body, Encoding.UTF8, "application/json");
 
             await client.PatchAsync($"{ApiBase}/gateway-devices/{id}/{field}", content);
 

@@ -15,38 +15,52 @@ namespace HvacMock.MockApi.Controllers
             _service = service;
         }
 
+        // haalt alle devices op
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var devices = await _service.GetAllAsync();
+            List<Device> devices = await _service.GetAllAsync();
+
             return Ok(devices);
         }
 
+        // haalt één device op op basis van id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
-                return BadRequest();
+            {
+                return BadRequest("Invalid id");
+            }
 
-            var device = await _service.GetByIdAsync(id);
+            Device device = await _service.GetByIdAsync(id);
 
             if (device == null)
+            {
                 return NotFound();
+            }
 
             return Ok(device);
         }
 
+        // past één veld aan van een device
         [HttpPatch("{id}/{field}")]
         public async Task<IActionResult> Patch(string id, string field, [FromBody] PatchRequest request)
         {
             if (string.IsNullOrWhiteSpace(id))
+            {
                 return BadRequest("Invalid id");
+            }
 
             if (request == null || string.IsNullOrWhiteSpace(request.Value))
+            {
                 return BadRequest("Invalid value");
+            }
 
             if (field != "status" && field != "mode" && field != "temperature")
+            {
                 return BadRequest("Invalid field");
+            }
 
             await _service.PatchAsync(id, field, request.Value);
 

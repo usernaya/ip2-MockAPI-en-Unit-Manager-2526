@@ -3,48 +3,32 @@
   "WorkspaceRootPath": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|f:\\my documents\\github\\mockapi-en-unit-manager-\\slnhvacmock\\hvacmock.ui\\controllers\\devicescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|solutionrelative:hvacmock.ui\\controllers\\devicescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EDC346E0-A2D6-4327-87CA-78F4C5EE26AD}|HvacMock.MockApi\\HvacMock.MockApi.csproj|f:\\my documents\\github\\mockapi-en-unit-manager-\\slnhvacmock\\hvacmock.mockapi\\controllers\\devicescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDC346E0-A2D6-4327-87CA-78F4C5EE26AD}|HvacMock.MockApi\\HvacMock.MockApi.csproj|solutionrelative:hvacmock.mockapi\\controllers\\devicescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EDC346E0-A2D6-4327-87CA-78F4C5EE26AD}|HvacMock.MockApi\\HvacMock.MockApi.csproj|f:\\my documents\\github\\mockapi-en-unit-manager-\\slnhvacmock\\hvacmock.mockapi\\services\\deviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDC346E0-A2D6-4327-87CA-78F4C5EE26AD}|HvacMock.MockApi\\HvacMock.MockApi.csproj|solutionrelative:hvacmock.mockapi\\services\\deviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|f:\\my documents\\github\\mockapi-en-unit-manager-\\slnhvacmock\\hvacmock.ui\\wwwroot\\js\\devices.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|solutionrelative:hvacmock.ui\\wwwroot\\js\\devices.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|f:\\my documents\\github\\mockapi-en-unit-manager-\\slnhvacmock\\hvacmock.ui\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|solutionrelative:hvacmock.ui\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|f:\\my documents\\github\\mockapi-en-unit-manager-\\slnhvacmock\\hvacmock.ui\\views\\devices\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|solutionrelative:hvacmock.ui\\views\\devices\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|f:\\my documents\\github\\mockapi-en-unit-manager-\\slnhvacmock\\hvacmock.ui\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|solutionrelative:hvacmock.ui\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|f:\\my documents\\github\\mockapi-en-unit-manager-\\slnhvacmock\\hvacmock.ui\\views\\devices\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|solutionrelative:hvacmock.ui\\views\\devices\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EDC346E0-A2D6-4327-87CA-78F4C5EE26AD}|HvacMock.MockApi\\HvacMock.MockApi.csproj|f:\\my documents\\github\\mockapi-en-unit-manager-\\slnhvacmock\\hvacmock.mockapi\\services\\ideviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDC346E0-A2D6-4327-87CA-78F4C5EE26AD}|HvacMock.MockApi\\HvacMock.MockApi.csproj|solutionrelative:hvacmock.mockapi\\services\\ideviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|f:\\my documents\\github\\mockapi-en-unit-manager-\\slnhvacmock\\hvacmock.ui\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|solutionrelative:hvacmock.ui\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|f:\\my documents\\github\\mockapi-en-unit-manager-\\slnhvacmock\\hvacmock.ui\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|solutionrelative:hvacmock.ui\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|f:\\my documents\\github\\mockapi-en-unit-manager-\\slnhvacmock\\hvacmock.ui\\models\\device.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|solutionrelative:hvacmock.ui\\models\\device.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|f:\\my documents\\github\\mockapi-en-unit-manager-\\slnhvacmock\\hvacmock.ui\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|solutionrelative:hvacmock.ui\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|f:\\my documents\\github\\mockapi-en-unit-manager-\\slnhvacmock\\hvacmock.ui\\controllers\\devicescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|solutionrelative:hvacmock.ui\\controllers\\devicescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|f:\\my documents\\github\\mockapi-en-unit-manager-\\slnhvacmock\\hvacmock.ui\\wwwroot\\js\\devices.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{E8C1E573-5EEE-49AD-9B0D-1DD77CFC37B9}|HvacMock.UI\\HvacMock.UI.csproj|solutionrelative:hvacmock.ui\\wwwroot\\js\\devices.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     }
   ],
   "DocumentGroupContainers": [
@@ -54,141 +38,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "HvacMock.UI\\Views\\Shared\\_Layout.cshtml",
               "ToolTip": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Views\\Shared\\_Layout.cshtml",
               "RelativeToolTip": "HvacMock.UI\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAAAC0AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-30T18:14:06.543Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "site.js",
-              "DocumentMoniker": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\wwwroot\\js\\site.js",
-              "RelativeDocumentMoniker": "HvacMock.UI\\wwwroot\\js\\site.js",
-              "ToolTip": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\wwwroot\\js\\site.js",
-              "RelativeToolTip": "HvacMock.UI\\wwwroot\\js\\site.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2026-03-30T18:03:36.113Z",
+              "WhenOpened": "2026-03-31T18:33:17.644Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "devices.js",
-              "DocumentMoniker": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\wwwroot\\js\\devices.js",
-              "RelativeDocumentMoniker": "HvacMock.UI\\wwwroot\\js\\devices.js",
-              "ToolTip": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\wwwroot\\js\\devices.js",
-              "RelativeToolTip": "HvacMock.UI\\wwwroot\\js\\devices.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAApAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2026-03-30T18:03:29.765Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "IDeviceService.cs",
-              "DocumentMoniker": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.MockApi\\Services\\IDeviceService.cs",
-              "RelativeDocumentMoniker": "HvacMock.MockApi\\Services\\IDeviceService.cs",
-              "ToolTip": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.MockApi\\Services\\IDeviceService.cs",
-              "RelativeToolTip": "HvacMock.MockApi\\Services\\IDeviceService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-30T16:59:44.681Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "DeviceService.cs",
-              "DocumentMoniker": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.MockApi\\Services\\DeviceService.cs",
-              "RelativeDocumentMoniker": "HvacMock.MockApi\\Services\\DeviceService.cs",
-              "ToolTip": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.MockApi\\Services\\DeviceService.cs",
-              "RelativeToolTip": "HvacMock.MockApi\\Services\\DeviceService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBcAAAA0AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-30T16:59:10.316Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "DevicesController.cs",
-              "DocumentMoniker": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.MockApi\\Controllers\\DevicesController.cs",
-              "RelativeDocumentMoniker": "HvacMock.MockApi\\Controllers\\DevicesController.cs",
-              "ToolTip": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.MockApi\\Controllers\\DevicesController.cs",
-              "RelativeToolTip": "HvacMock.MockApi\\Controllers\\DevicesController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAUwCEAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-30T16:15:54.252Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "DevicesController.cs",
-              "DocumentMoniker": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Controllers\\DevicesController.cs",
-              "RelativeDocumentMoniker": "HvacMock.UI\\Controllers\\DevicesController.cs",
-              "ToolTip": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Controllers\\DevicesController.cs",
-              "RelativeToolTip": "HvacMock.UI\\Controllers\\DevicesController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-30T16:11:35.598Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Device.cs",
-              "DocumentMoniker": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Models\\Device.cs",
-              "RelativeDocumentMoniker": "HvacMock.UI\\Models\\Device.cs",
-              "ToolTip": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Models\\Device.cs",
-              "RelativeToolTip": "HvacMock.UI\\Models\\Device.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-30T16:11:27.523Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Views\\Devices\\Index.cshtml",
-              "RelativeDocumentMoniker": "HvacMock.UI\\Views\\Devices\\Index.cshtml",
-              "ToolTip": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Views\\Devices\\Index.cshtml",
-              "RelativeToolTip": "HvacMock.UI\\Views\\Devices\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACoAAAAGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-30T16:11:20.619Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Details.cshtml",
-              "DocumentMoniker": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Views\\Devices\\Details.cshtml",
-              "RelativeDocumentMoniker": "HvacMock.UI\\Views\\Devices\\Details.cshtml",
-              "ToolTip": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Views\\Devices\\Details.cshtml",
-              "RelativeToolTip": "HvacMock.UI\\Views\\Devices\\Details.cshtml",
-              "ViewState": "AgIAAAQAAAAAAAAAAAAUwCsAAACDAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-30T16:11:14.502Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
               "Title": "Program.cs",
               "DocumentMoniker": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Program.cs",
               "RelativeDocumentMoniker": "HvacMock.UI\\Program.cs",
@@ -196,7 +63,72 @@
               "RelativeToolTip": "HvacMock.UI\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-30T16:11:04.165Z",
+              "WhenOpened": "2026-03-31T18:31:43.098Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Views\\Devices\\Index.cshtml",
+              "RelativeDocumentMoniker": "HvacMock.UI\\Views\\Devices\\Index.cshtml",
+              "ToolTip": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Views\\Devices\\Index.cshtml",
+              "RelativeToolTip": "HvacMock.UI\\Views\\Devices\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-31T18:31:15.421Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Views\\Devices\\Details.cshtml",
+              "RelativeDocumentMoniker": "HvacMock.UI\\Views\\Devices\\Details.cshtml",
+              "ToolTip": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Views\\Devices\\Details.cshtml",
+              "RelativeToolTip": "HvacMock.UI\\Views\\Devices\\Details.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-31T18:31:05.431Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Device.cs",
+              "DocumentMoniker": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Models\\Device.cs",
+              "RelativeDocumentMoniker": "HvacMock.UI\\Models\\Device.cs",
+              "ToolTip": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Models\\Device.cs",
+              "RelativeToolTip": "HvacMock.UI\\Models\\Device.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-31T18:30:58.722Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DevicesController.cs",
+              "DocumentMoniker": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Controllers\\DevicesController.cs",
+              "RelativeDocumentMoniker": "HvacMock.UI\\Controllers\\DevicesController.cs",
+              "ToolTip": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\Controllers\\DevicesController.cs",
+              "RelativeToolTip": "HvacMock.UI\\Controllers\\DevicesController.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAAwDgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-31T18:29:55.362Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "devices.js",
+              "DocumentMoniker": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\wwwroot\\js\\devices.js",
+              "RelativeDocumentMoniker": "HvacMock.UI\\wwwroot\\js\\devices.js",
+              "ToolTip": "F:\\My Documents\\GitHub\\MockAPI-en-Unit-Manager-\\SlnHvacMock\\HvacMock.UI\\wwwroot\\js\\devices.js",
+              "RelativeToolTip": "HvacMock.UI\\wwwroot\\js\\devices.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-03-31T18:29:47.427Z",
               "EditorCaption": ""
             }
           ]

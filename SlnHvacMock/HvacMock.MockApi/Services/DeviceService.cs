@@ -15,13 +15,13 @@ namespace HvacMock.MockApi.Services
 
         public async Task<List<Device>> GetAllAsync()
         {
-            var items = await _repo.GetAllAsync();
+            List<Dictionary<string, AttributeValue>> items = await _repo.GetAllAsync();
             return items.Select(MapToDevice).ToList();
         }
 
         public async Task<Device?> GetByIdAsync(string id)
         {
-            var item = await _repo.GetByIdAsync(id);
+            Dictionary<string, AttributeValue> item = await _repo.GetByIdAsync(id);
             if (item == null) return null;
             return MapToDevice(item);
         }
