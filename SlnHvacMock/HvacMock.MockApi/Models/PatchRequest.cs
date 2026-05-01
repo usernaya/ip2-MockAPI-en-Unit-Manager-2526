@@ -1,7 +1,10 @@
-﻿namespace HvacMock.MockApi.Models
+﻿using System.Text.Json;
+
+namespace HvacMock.MockApi.Models
 {
     public class PatchRequest
     {
-        public string Value { get; set; }
+        // JsonElement zodat zowel strings ("cooling"), getallen (23.5) als booleans (true) werken
+        public JsonElement Value { get; set; }
     }
 }

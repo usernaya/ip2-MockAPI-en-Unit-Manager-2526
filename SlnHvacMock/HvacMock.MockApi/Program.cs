@@ -1,15 +1,24 @@
 using Amazon.DynamoDBv2;
 using Amazon.Runtime;
+using HvacMock.MockApi.Infrastructure;
 using HvacMock.MockApi.Repositories;
 using HvacMock.MockApi.Services;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+// camelCase JSON zodat de response de structuur van de klant volgt
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// DynamoDB
+// DynamoDB Local verbinding
 AmazonDynamoDBConfig config = new AmazonDynamoDBConfig
 {
     ServiceURL = builder.Configuration["DynamoDb:ServiceURL"]
@@ -22,9 +31,10 @@ AmazonDynamoDBClient client = new AmazonDynamoDBClient(
 
 builder.Services.AddSingleton<IAmazonDynamoDB>(client);
 
-// dependency injection
+// Dependency injection
 builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
 builder.Services.AddScoped<IDeviceService, DeviceService>();
+builder.Services.AddScoped<DataSeeder>();
 
 builder.Services.AddCors(options =>
 {
@@ -45,5 +55,12 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+
+// Maak tabel aan en seed data bij opstart
+using (IServiceScope scope = app.Services.CreateScope())
+{
+    DataSeeder seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+    await seeder.SeedAsync();
+}
 
 app.Run();

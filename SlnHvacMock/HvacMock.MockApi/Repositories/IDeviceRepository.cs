@@ -1,11 +1,12 @@
-﻿using Amazon.DynamoDBv2.Model;
+using HvacMock.MockApi.Models;
 
 namespace HvacMock.MockApi.Repositories
 {
     public interface IDeviceRepository
     {
-        Task<List<Dictionary<string, AttributeValue>>> GetAllAsync();
-        Task<Dictionary<string, AttributeValue>?> GetByIdAsync(string id);
-        Task UpdateFieldAsync(string id, string field, string value);
+        Task<List<Device>> GetAllAsync();
+        Task<Device?> GetByIdAsync(string deviceId);
+        Task SaveAsync(Device device);
+        Task CreateTableIfNotExistsAsync();
     }
 }

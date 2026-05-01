@@ -1,4 +1,4 @@
-﻿using HvacMock.MockApi.Models;
+using HvacMock.MockApi.Models;
 using HvacMock.MockApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,56 +15,80 @@ namespace HvacMock.MockApi.Controllers
             _service = service;
         }
 
-        // haalt alle devices op
+        // Haalt alle devices op uit DynamoDB
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll()
         {
             List<Device> devices = await _service.GetAllAsync();
-
             return Ok(devices);
         }
 
-        // haalt één device op op basis van id
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(string id)
+        // Haalt één device op op basis van deviceId
+        [HttpGet("{deviceId}")]
+        public async Task<IActionResult> GetById(string deviceId)
         {
-            if (string.IsNullOrWhiteSpace(id))
+            if (string.IsNullOrWhiteSpace(deviceId))
             {
-                return BadRequest("Invalid id");
+                return BadRequest("deviceId is verplicht");
             }
 
-            Device device = await _service.GetByIdAsync(id);
-
-            if (device == null)
+            try
             {
-                return NotFound();
-            }
+                Device? device = await _service.GetByIdAsync(deviceId);
 
-            return Ok(device);
+                if (device == null)
+                {
+                    return NotFound($"Device met id '{deviceId}' niet gevonden");
+                }
+
+                return Ok(device);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Fout bij ophalen van device: {ex.Message}");
+            }
         }
 
-        // past één veld aan van een device
-        [HttpPatch("{id}/{field}")]
-        public async Task<IActionResult> Patch(string id, string field, [FromBody] PatchRequest request)
+        // Past één veld aan via een dynamisch genest pad binnen de bestaande JSON-structuur.
+        // {**field} is een catch-all zodat paden met punten correct worden doorgegeven.
+        // Voorbeeld: PATCH /v1/gateway-devices/device-1/managementPoints[0].targetTemperature.value
+        [HttpPatch("{deviceId}/{**field}")]
+        public async Task<IActionResult> Patch(string deviceId, string field, [FromBody] PatchRequest? request)
         {
-            if (string.IsNullOrWhiteSpace(id))
+            if (string.IsNullOrWhiteSpace(deviceId))
             {
-                return BadRequest("Invalid id");
+                return BadRequest("deviceId is verplicht");
             }
 
-            if (request == null || string.IsNullOrWhiteSpace(request.Value))
+            if (string.IsNullOrWhiteSpace(field))
             {
-                return BadRequest("Invalid value");
+                return BadRequest("field-pad is verplicht. Voorbeeld: managementPoints[1].targetTemperature.value");
             }
 
-            if (field != "status" && field != "mode" && field != "temperature")
+            if (request == null)
             {
-                return BadRequest("Invalid field");
+                return BadRequest("Request body is verplicht. Voorbeeld: { \"value\": 21 }");
             }
 
-            await _service.PatchAsync(id, field, request.Value);
+            try
+            {
+                Device? updated = await _service.PatchAsync(deviceId, field, request.Value);
 
-            return Ok();
+                if (updated == null)
+                {
+                    return NotFound($"Device met id '{deviceId}' niet gevonden");
+                }
+
+                return Ok(updated);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Fout bij uitvoeren van PATCH: {ex.Message}");
+            }
         }
     }
 }
