@@ -26,6 +26,8 @@ namespace HvacMock.UI.Controllers
             List<Device> devices = JsonSerializer.Deserialize<List<Device>>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
+            devices = devices.OrderBy(d => d.Id).ToList();
+
             return View(devices);
         }
 
