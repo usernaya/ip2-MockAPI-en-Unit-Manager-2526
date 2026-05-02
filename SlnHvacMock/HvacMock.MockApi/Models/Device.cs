@@ -44,7 +44,7 @@ namespace HvacMock.MockApi.Models
         public string Value { get; set; } = string.Empty;
     }
 
-    // { "settable": true, "value": 21, "minValue": 12, "maxValue": 30, "stepValue": 0.5 }
+    // { "settable": true, "value": 20.5, "minValue": 12, "maxValue": 30, "stepValue": 0.5 }
     public class TargetTemperatureField
     {
         public bool Settable { get; set; }
@@ -73,7 +73,7 @@ namespace HvacMock.MockApi.Models
         public Dictionary<string, Setpoint> Setpoints { get; set; } = new();
     }
 
-    // { "settable": true, "value": 21, "minValue": 12, "maxValue": 30, "stepValue": 0.5 }
+    // { "settable": true, "value": 20.5, "minValue": 12, "maxValue": 30, "stepValue": 0.5 }
     public class Setpoint
     {
         public bool Settable { get; set; }

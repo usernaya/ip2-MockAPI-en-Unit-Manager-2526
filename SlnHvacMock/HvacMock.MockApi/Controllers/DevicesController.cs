@@ -1,10 +1,12 @@
 using HvacMock.MockApi.Models;
 using HvacMock.MockApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HvacMock.MockApi.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("v1/gateway-devices")]
     public class DevicesController : ControllerBase
     {
@@ -67,7 +69,7 @@ namespace HvacMock.MockApi.Controllers
 
             if (request == null)
             {
-                return BadRequest("Request body is verplicht. Voorbeeld: { \"value\": 21 }");
+                return BadRequest("Request body is verplicht. Voorbeeld: { \"value\": 20.5 }");
             }
 
             try

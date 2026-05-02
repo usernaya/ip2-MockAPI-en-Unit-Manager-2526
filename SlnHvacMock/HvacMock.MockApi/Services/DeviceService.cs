@@ -51,15 +51,126 @@ namespace HvacMock.MockApi.Services
 
             // Navigeer naar het parent-node en zet de nieuwe waarde
             (JsonNode parentNode, string lastSegment) = NavigateToParent(root, path);
+
+            ValidateAgainstConstraints(parentNode, lastSegment, newValue);
+
             parentNode[lastSegment] = JsonNode.Parse(newValue.GetRawText());
 
             // Deserialize terug naar Device en sla op in DynamoDB
             string updatedJson = root.ToJsonString();
             Device updatedDevice = JsonSerializer.Deserialize<Device>(updatedJson, JsonOptions)!;
 
+            ApplyOperationModeDefaultTemperature(updatedDevice, path, newValue);
+
             await _repo.SaveAsync(updatedDevice);
 
             return updatedDevice;
+        }
+
+        private static void ApplyOperationModeDefaultTemperature(Device device, string path, JsonElement newValue)
+        {
+            Match match = Regex.Match(path, @"^managementPoints\[(\d+)\]\.operationMode\.value$");
+            if (!match.Success)
+            {
+                return;
+            }
+
+            string? mode = newValue.ValueKind == JsonValueKind.String ? newValue.GetString() : null;
+            if (string.IsNullOrWhiteSpace(mode))
+            {
+                throw new ArgumentException("Operation mode moet een tekstwaarde zijn.");
+            }
+
+            int managementPointIndex = int.Parse(match.Groups[1].Value);
+
+            if (managementPointIndex < 0 || managementPointIndex >= device.ManagementPoints.Count)
+            {
+                throw new ArgumentException($"Management point index {managementPointIndex} bestaat niet.");
+            }
+
+            ManagementPoint managementPoint = device.ManagementPoints[managementPointIndex];
+            TargetTemperatureField targetTemperature = managementPoint.TargetTemperature
+                ?? throw new ArgumentException("targetTemperature ontbreekt op dit management point.");
+
+            if (managementPoint.TemperatureControl?.Value.OperationModes.TryGetValue(mode, out OperationModeSetpoints? modeSetpoints) != true
+                || modeSetpoints == null
+                || !modeSetpoints.Setpoints.TryGetValue("roomTemperature", out Setpoint? roomTemperature))
+            {
+                throw new ArgumentException($"Geen standaardtemperatuur gevonden voor mode '{mode}'.");
+            }
+
+            ValidateTemperatureValue(roomTemperature.MinValue, roomTemperature.MaxValue, roomTemperature.StepValue, roomTemperature.Value);
+
+            targetTemperature.MinValue = roomTemperature.MinValue;
+            targetTemperature.MaxValue = roomTemperature.MaxValue;
+            targetTemperature.StepValue = roomTemperature.StepValue;
+            targetTemperature.Value = roomTemperature.Value;
+        }
+
+        private static void ValidateTemperatureValue(double minValue, double maxValue, double stepValue, double value)
+        {
+            if (value < minValue)
+                throw new ArgumentException($"Waarde moet >= {minValue} zijn.");
+
+            if (value > maxValue)
+                throw new ArgumentException($"Waarde moet <= {maxValue} zijn.");
+
+            if (stepValue > 0)
+            {
+                double steps = (value - minValue) / stepValue;
+
+                if (Math.Abs(steps - Math.Round(steps)) > 0.000001)
+                    throw new ArgumentException($"Waarde moet in stappen van {stepValue} zijn.");
+            }
+        }
+
+        // Leest settable / values / minValue / maxValue uit de parent-node en gooit ArgumentException als de waarde ongeldig is.
+        // Werkt alleen als het laatste segment "value" is (bv. onOffMode.value, targetTemperature.value).
+        private static void ValidateAgainstConstraints(JsonNode parentNode, string lastSegment, JsonElement newValue)
+        {
+            if (lastSegment != "value") return;
+            if (parentNode is not JsonObject fieldObj) return;
+
+            // settable check
+            if (fieldObj["settable"] is JsonValue settableNode && !settableNode.GetValue<bool>())
+                throw new ArgumentException("Dit veld is niet aanpasbaar (settable: false).");
+
+            // allowed values check
+            if (fieldObj["values"] is JsonArray allowedValues && allowedValues.Count > 0)
+            {
+                string? incoming = newValue.ValueKind == JsonValueKind.String ? newValue.GetString() : null;
+                if (!allowedValues.Any(v => v?.GetValue<string>() == incoming))
+                {
+                    string joined = string.Join(", ", allowedValues.Select(v => v?.GetValue<string>() ?? ""));
+                    throw new ArgumentException($"Ongeldige waarde. Toegestane waarden: {joined}.");
+                }
+            }
+
+            // min/max check
+            JsonNode? minNode = fieldObj["minValue"];
+            JsonNode? maxNode = fieldObj["maxValue"];
+            JsonNode? stepNode = fieldObj["stepValue"];
+            if (minNode != null || maxNode != null || stepNode != null)
+            {
+                if (newValue.ValueKind != JsonValueKind.Number || !newValue.TryGetDouble(out double numVal))
+                    throw new ArgumentException("Waarde moet een getal zijn.");
+
+                if (minNode != null && numVal < minNode.GetValue<double>())
+                    throw new ArgumentException($"Waarde moet >= {minNode.GetValue<double>()} zijn.");
+
+                if (maxNode != null && numVal > maxNode.GetValue<double>())
+                    throw new ArgumentException($"Waarde moet <= {maxNode.GetValue<double>()} zijn.");
+
+                if (stepNode != null && stepNode.GetValue<double>() > 0)
+                {
+                    double minVal = minNode?.GetValue<double>() ?? 0;
+                    double stepVal = stepNode.GetValue<double>();
+                    double steps = (numVal - minVal) / stepVal;
+
+                    if (Math.Abs(steps - Math.Round(steps)) > 0.000001)
+                        throw new ArgumentException($"Waarde moet in stappen van {stepVal} zijn.");
+                }
+            }
         }
 
         // Navigeert naar het parent-node van het doelveld.
