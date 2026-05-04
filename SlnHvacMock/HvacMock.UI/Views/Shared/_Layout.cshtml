@@ -19,7 +19,15 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <a class="navbar-brand" asp-controller="Devices" asp-action="Index">HVAC Mock</a>
+                        <a class="navbar-brand" asp-controller="Devices" asp-action="Index">HVAC Admin</a>
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if (Context.Session.GetString("jwt_token") != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Auth" asp-action="Logout">🔓 Uitloggen</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

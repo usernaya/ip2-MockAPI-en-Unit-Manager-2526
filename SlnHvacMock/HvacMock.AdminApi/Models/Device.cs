@@ -1,22 +1,11 @@
-namespace HvacMock.UI.Models
+namespace HvacMock.AdminApi.Models
 {
-    // Volledig device model zoals de Admin API het teruggeeft
     public class Device
     {
         public string Id { get; set; } = string.Empty;
         public string Type { get; set; } = string.Empty;
         public string DeviceModel { get; set; } = string.Empty;
         public List<ManagementPoint> ManagementPoints { get; set; } = new();
-
-        // Hulpeigenschappen voor de lijstpagina — afgeleid van managementPoints
-        public string Status =>
-            ManagementPoints.FirstOrDefault(m => m.OnOffMode != null)?.OnOffMode?.Value ?? "-";
-
-        public string Mode =>
-            ManagementPoints.FirstOrDefault(m => m.OperationMode != null)?.OperationMode?.Value ?? "-";
-
-        public double Temperature =>
-            ManagementPoints.FirstOrDefault(m => m.TargetTemperature != null)?.TargetTemperature?.Value ?? 0;
     }
 
     public class ManagementPoint
@@ -31,6 +20,7 @@ namespace HvacMock.UI.Models
         public TemperatureControlField? TemperatureControl { get; set; }
     }
 
+    // { "settable": false, "value": "Gateway", "maxLength": 63 }
     public class SettableStringValue
     {
         public bool Settable { get; set; }
@@ -38,6 +28,7 @@ namespace HvacMock.UI.Models
         public int? MaxLength { get; set; }
     }
 
+    // { "settable": true, "values": ["on","off"], "value": "on" }
     public class OnOffModeField
     {
         public bool Settable { get; set; }
@@ -45,6 +36,7 @@ namespace HvacMock.UI.Models
         public string Value { get; set; } = string.Empty;
     }
 
+    // { "settable": true, "values": ["heating","cooling","auto"], "value": "heating" }
     public class OperationModeField
     {
         public bool Settable { get; set; }
@@ -52,6 +44,7 @@ namespace HvacMock.UI.Models
         public string Value { get; set; } = string.Empty;
     }
 
+    // { "settable": true, "value": 21, "minValue": 12, "maxValue": 30, "stepValue": 0.5 }
     public class TargetTemperatureField
     {
         public bool Settable { get; set; }
@@ -61,9 +54,32 @@ namespace HvacMock.UI.Models
         public double StepValue { get; set; }
     }
 
+    // { "ref": "#temperatureControl", "settable": false, "value": { "operationModes": { ... } } }
     public class TemperatureControlField
     {
         public string? Ref { get; set; }
         public bool Settable { get; set; }
+        public TemperatureControlValue Value { get; set; } = new();
+    }
+
+    public class TemperatureControlValue
+    {
+        public Dictionary<string, OperationModeSetpoints> OperationModes { get; set; } = new();
+    }
+
+    // { "setpoints": { "roomTemperature": { ... } } }
+    public class OperationModeSetpoints
+    {
+        public Dictionary<string, Setpoint> Setpoints { get; set; } = new();
+    }
+
+    // { "settable": true, "value": 21, "minValue": 12, "maxValue": 30, "stepValue": 0.5 }
+    public class Setpoint
+    {
+        public bool Settable { get; set; }
+        public double Value { get; set; }
+        public double MaxValue { get; set; }
+        public double MinValue { get; set; }
+        public double StepValue { get; set; }
     }
 }

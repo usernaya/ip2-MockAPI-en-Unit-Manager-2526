@@ -1,58 +1,134 @@
-﻿@model HvacMock.UI.Models.Device
+@model HvacMock.UI.Models.Device
 
 @{
-    ViewData["Title"] = "Detail";
+    ViewData["Title"] = "Device detail";
+
+    // Zoek het climateControl management point op (index 1)
+    var climate = Model.ManagementPoints.FirstOrDefault(m => m.ManagementPointType == "climateControl");
 }
 
 <div class="container mt-4">
 
-    <a asp-action="Index" class="btn btn-secondary mb-3">Terug</a>
+    <a asp-action="Index" class="btn btn-secondary mb-3">← Terug</a>
 
-    <h2 class="mb-4">Device Details</h2>
+    <h2 class="mb-4">Device: <code>@Model.Id</code></h2>
 
-    <div class="card mb-4">
-        <div class="card-body">
-            <p><strong>ID:</strong> @Model.Id</p>
-            <p>
-                <strong>Status:</strong>
-                <span class="badge @(Model.Status == "on" ? "bg-success" : "bg-danger")">
-                    @Model.Status
-                </span>
-            </p>
-            <p><strong>Mode:</strong> @Model.Mode</p>
-            <p><strong>Temperature:</strong> @Model.Temperature °C</p>
-        </div>
-    </div>
+    <div class="row">
 
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            Waarde aanpassen
-        </div>
-        <div class="card-body">
-            <form asp-action="Patch" method="post">
-                <input type="hidden" name="id" value="@Model.Id" />
+        @* Info-kaart *@
+        <div class="col-md-5 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-dark text-white fw-semibold">Informatie</div>
+                <div class="card-body">
+                    <p><strong>ID:</strong> @Model.Id</p>
+                    <p><strong>Type:</strong> @Model.Type</p>
+                    <p><strong>Model:</strong> @Model.DeviceModel</p>
 
-                <div class="mb-3">
-                    <label class="form-label">Veld</label>
-                    <select name="field" class="form-select" id="fieldSelect">
-                        <option value="status">Status</option>
-                        <option value="mode">Mode</option>
-                        <option value="temperature">Temperature</option>
-                    </select>
+                    @if (climate != null)
+                    {
+                        <hr />
+                        <p>
+                            <strong>Status:</strong>
+                            <span class="badge @(Model.Status == "on" ? "bg-success" : "bg-danger")">
+                                @Model.Status
+                            </span>
+                        </p>
+                        <p><strong>Mode:</strong> @Model.Mode</p>
+                        <p><strong>Temperatuur:</strong> @Model.Temperature °C</p>
+                    }
                 </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Nieuwe waarde</label>
-
-                    <select id="valueDropdown" class="form-select"></select>
-                    <input type="number" id="valueInput" class="form-control" style="display:none;" step="0.5" min="12" max="30" />
-                </div>
-
-                <button type="submit" class="btn btn-success w-100">
-                    Update
-                </button>
-            </form>
+            </div>
         </div>
+
+        @* PATCH-formulier *@
+        @if (climate != null)
+        {
+            <div class="col-md-5 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white fw-semibold">
+                        Waarde aanpassen
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Patch" method="post">
+                            <input type="hidden" name="id" value="@Model.Id" />
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Veld</label>
+                                <select name="field" class="form-select" id="fieldSelect">
+                                    <option value="targetTemperature">Doeltemperatuur</option>
+                                    <option value="operationMode">Mode</option>
+                                    <option value="onOffMode">Aan/Uit</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Nieuwe waarde</label>
+
+                                @* Temperatuur invoer *@
+                                <input type="number" name="value" id="tempInput"
+                                       class="form-control"
+                                       step="0.5" min="12" max="30"
+                                       value="@Model.Temperature" />
+
+                                @* Mode dropdown *@
+                                <select name="value" id="modeSelect" class="form-select" style="display:none;">
+                                    <option value="heating">heating</option>
+                                    <option value="cooling">cooling</option>
+                                    <option value="auto">auto</option>
+                                </select>
+
+                                @* Aan/Uit dropdown *@
+                                <select name="value" id="onOffSelect" class="form-select" style="display:none;">
+                                    <option value="on">on</option>
+                                    <option value="off">off</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100">
+                                Opslaan
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+
     </div>
 
 </div>
+
+@section Scripts {
+<script>
+    // Toon het juiste invoerveld op basis van het gekozen veld
+    const fieldSelect = document.getElementById('fieldSelect');
+    const tempInput   = document.getElementById('tempInput');
+    const modeSelect  = document.getElementById('modeSelect');
+    const onOffSelect = document.getElementById('onOffSelect');
+
+    function updateInputVisibility() {
+        tempInput.style.display   = 'none';
+        modeSelect.style.display  = 'none';
+        onOffSelect.style.display = 'none';
+
+        // Zet disabled zodat alleen het zichtbare veld wordt meegestuurd
+        tempInput.disabled   = true;
+        modeSelect.disabled  = true;
+        onOffSelect.disabled = true;
+
+        const selected = fieldSelect.value;
+        if (selected === 'targetTemperature') {
+            tempInput.style.display = 'block';
+            tempInput.disabled = false;
+        } else if (selected === 'operationMode') {
+            modeSelect.style.display = 'block';
+            modeSelect.disabled = false;
+        } else if (selected === 'onOffMode') {
+            onOffSelect.style.display = 'block';
+            onOffSelect.disabled = false;
+        }
+    }
+
+    fieldSelect.addEventListener('change', updateInputVisibility);
+    updateInputVisibility(); // Initieel uitvoeren
+</script>
+}
