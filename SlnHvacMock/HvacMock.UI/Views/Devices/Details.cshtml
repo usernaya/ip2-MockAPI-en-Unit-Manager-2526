@@ -1,4 +1,4 @@
-@model HvacMock.UI.Models.Device
+@model HvacMock.UI.Models.Devices.Device
 
 @{
     ViewData["Title"] = "Manage Device";
@@ -14,6 +14,11 @@
     var tempField = $"managementPoints[{primaryIndex}].targetTemperature.value";
     var temperatureModes = primary?.TemperatureControl?.Value.OperationModes.Keys.ToList() ?? new List<string>();
     var activeMode = primary?.OperationMode?.Value ?? temperatureModes.FirstOrDefault() ?? string.Empty;
+    var hasEditableControls = primary?.OnOffMode?.Settable == true
+        || primary?.OperationMode?.Settable == true
+        || primary?.TargetTemperature?.Settable == true
+        || primary?.TemperatureControl?.Value.OperationModes.Values.Any(mode =>
+            mode.Setpoints.Values.Any(setpoint => setpoint.Settable)) == true;
 }
 
 <div class="app-page detail-page">
@@ -68,6 +73,14 @@
                 @primary.OnOffMode.Value
             </span>
         }
+
+        @if (primary != null && !hasEditableControls)
+        {
+            <span class="readonly-pill">
+                <i class="bi bi-lock"></i>
+                Read only
+            </span>
+        }
     </section>
 
     @if (primary != null && primaryIndex >= 0)
@@ -80,7 +93,13 @@
                         <i class="bi bi-power"></i>
                         <div>
                             <h2>Power</h2>
-                            <p>Current state: @primary.OnOffMode.Value</p>
+                            <p>
+                                Current state: @primary.OnOffMode.Value
+                                @if (!primary.OnOffMode.Settable)
+                                {
+                                    <span class="readonly-text">Read only</span>
+                                }
+                            </p>
                         </div>
                     </div>
                     <div class="choice-actions">
@@ -108,7 +127,13 @@
                         <i class="bi bi-wind"></i>
                         <div>
                             <h2>Mode</h2>
-                            <p>Allowed values from the API</p>
+                            <p>
+                                Allowed values from the API
+                                @if (!primary.OperationMode.Settable)
+                                {
+                                    <span class="readonly-text">Read only</span>
+                                }
+                            </p>
                         </div>
                     </div>
                     <div class="choice-actions">
@@ -139,6 +164,10 @@
                             <p>
                                 Bereik: @primary.TargetTemperature.MinValue.ToString("0.#")-@primary.TargetTemperature.MaxValue.ToString("0.#") &deg;C,
                                 stap @primary.TargetTemperature.StepValue.ToString("0.#")
+                                @if (!primary.TargetTemperature.Settable)
+                                {
+                                    <span class="readonly-text">Read only</span>
+                                }
                             </p>
                         </div>
                     </div>
@@ -188,6 +217,10 @@
                                     <p>
                                         Bereik: @roomTemperature.MinValue.ToString("0.#")-@roomTemperature.MaxValue.ToString("0.#") &deg;C,
                                         stap @roomTemperature.StepValue.ToString("0.#")
+                                        @if (!roomTemperature.Settable)
+                                        {
+                                            <span class="readonly-text">Read only</span>
+                                        }
                                     </p>
                                 </div>
                             </div>

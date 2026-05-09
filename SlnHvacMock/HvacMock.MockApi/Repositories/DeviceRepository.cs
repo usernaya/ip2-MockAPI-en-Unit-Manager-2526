@@ -1,6 +1,7 @@
 using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.DynamoDBv2.Model;
-using HvacMock.MockApi.Models;
+using HvacMock.MockApi.Models.Devices;
 using System.Text.Json;
 
 namespace HvacMock.MockApi.Repositories
@@ -65,15 +66,14 @@ namespace HvacMock.MockApi.Repositories
         public async Task SaveAsync(Device device)
         {
             string json = JsonSerializer.Serialize(device, JsonOptions);
+            Dictionary<string, AttributeValue> item = Document.FromJson(json).ToAttributeMap();
+
+            item["deviceId"] = new AttributeValue { S = device.Id };
 
             await _db.PutItemAsync(new PutItemRequest
             {
                 TableName = TableName,
-                Item = new Dictionary<string, AttributeValue>
-                {
-                    { "deviceId", new AttributeValue { S = device.Id } },
-                    { "data", new AttributeValue { S = json } }
-                }
+                Item = item
             });
         }
 
@@ -112,12 +112,13 @@ namespace HvacMock.MockApi.Repositories
 
         private Device? DeserializeItem(Dictionary<string, AttributeValue> item)
         {
-            if (!item.TryGetValue("data", out AttributeValue? dataAttr) || string.IsNullOrEmpty(dataAttr.S))
+            if (item.TryGetValue("data", out AttributeValue? dataAttr) && !string.IsNullOrEmpty(dataAttr.S))
             {
-                return null;
+                return JsonSerializer.Deserialize<Device>(dataAttr.S, JsonOptions);
             }
 
-            return JsonSerializer.Deserialize<Device>(dataAttr.S, JsonOptions);
+            string json = Document.FromAttributeMap(item).ToJson();
+            return JsonSerializer.Deserialize<Device>(json, JsonOptions);
         }
     }
 }

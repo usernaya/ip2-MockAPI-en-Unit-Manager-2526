@@ -1,4 +1,4 @@
-namespace HvacMock.MockApi.Models
+namespace HvacMock.MockApi.Models.Devices.Constraints
 {
     public record FieldConstraint(
         bool Settable,

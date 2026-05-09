@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace HvacMock.MockApi.Models
+namespace HvacMock.MockApi.Models.Requests
 {
     public class PatchRequest
     {

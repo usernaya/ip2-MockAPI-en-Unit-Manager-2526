@@ -249,7 +249,8 @@ p {
 }
 
 .status-pill,
-.mode-pill {
+.mode-pill,
+.readonly-pill {
     display: inline-flex;
     align-items: center;
     gap: 0.38rem;
@@ -272,6 +273,20 @@ p {
 .mode-pill {
     background: #edf4ff;
     color: var(--primary);
+}
+
+.readonly-pill {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+.readonly-text {
+    display: inline-flex;
+    margin-left: 0.45rem;
+    color: #4b5563;
+    font-size: 0.78rem;
+    font-weight: 850;
+    text-transform: uppercase;
 }
 
 .manage-link,
@@ -420,6 +435,11 @@ p {
 .choice-button:disabled {
     cursor: default;
     opacity: 0.7;
+}
+
+.temperature-form input:disabled {
+    color: var(--muted);
+    background: #f3f4f6;
 }
 
 .temperature-form {

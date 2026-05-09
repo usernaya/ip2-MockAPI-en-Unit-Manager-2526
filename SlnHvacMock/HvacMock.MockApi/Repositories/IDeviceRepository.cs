@@ -1,4 +1,4 @@
-using HvacMock.MockApi.Models;
+using HvacMock.MockApi.Models.Devices;
 
 namespace HvacMock.MockApi.Repositories
 {

@@ -1,4 +1,4 @@
-@model List<HvacMock.UI.Models.Device>
+@model List<HvacMock.UI.Models.Devices.Device>
 
 @{
     ViewData["Title"] = "Devices";
@@ -34,6 +34,11 @@
             var iconClass = type.Contains("air") || type.Contains("condition") ? "bi-snow" : "bi-thermometer-sun";
             var iconBg = type.Contains("air") || type.Contains("condition") ? "icon-ac" : "icon-heat";
             var roomName = primary?.Name?.Value ?? "Primary zone";
+            var hasEditableControls = primary?.OnOffMode?.Settable == true
+                || primary?.OperationMode?.Settable == true
+                || primary?.TargetTemperature?.Settable == true
+                || primary?.TemperatureControl?.Value.OperationModes.Values.Any(mode =>
+                    mode.Setpoints.Values.Any(setpoint => setpoint.Settable)) == true;
 
             <article class="device-card">
                 <div class="device-card-top">
@@ -45,6 +50,13 @@
                         <span class="status-pill @(isOn ? "is-on" : "is-off")">
                             <i class="bi bi-power"></i>
                             @primary.OnOffMode.Value
+                        </span>
+                    }
+                    @if (primary != null && !hasEditableControls)
+                    {
+                        <span class="readonly-pill">
+                            <i class="bi bi-lock"></i>
+                            Read only
                         </span>
                     }
                 </div>

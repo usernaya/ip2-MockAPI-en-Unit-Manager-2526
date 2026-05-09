@@ -1,7 +1,7 @@
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using HvacMock.UI.Models;
+using HvacMock.UI.Models.Devices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HvacMock.UI.Controllers

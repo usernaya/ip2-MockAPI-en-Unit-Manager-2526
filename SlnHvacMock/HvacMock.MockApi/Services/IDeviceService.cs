@@ -1,4 +1,4 @@
-using HvacMock.MockApi.Models;
+using HvacMock.MockApi.Models.Devices;
 using System.Text.Json;
 
 namespace HvacMock.MockApi.Services

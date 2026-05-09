@@ -1,4 +1,5 @@
-using HvacMock.MockApi.Models;
+using HvacMock.MockApi.Models.Devices;
+using HvacMock.MockApi.Models.Requests;
 using HvacMock.MockApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
