@@ -41,6 +41,34 @@ namespace HvacMock.UI.Controllers
             return client;
         }
 
+        // GET /devices/dashboard → statistieken overzicht
+        public async Task<IActionResult> Dashboard()
+        {
+            HttpClient? client = GetAuthenticatedClient();
+            if (client == null) return RedirectToAction("Login", "Auth");
+
+            string json = await client.GetStringAsync($"{ApiBase}/admin/devices");
+            List<Device> devices = JsonSerializer.Deserialize<List<Device>>(json, JsonOptions)
+                ?? new List<Device>();
+
+            DashboardViewModel vm = new DashboardViewModel
+            {
+                TotalDevices       = devices.Count,
+                ActiveDevices      = devices.Count(d => d.Status == "on"),
+                InactiveDevices    = devices.Count(d => d.Status != "on"),
+                AverageTemperature = devices.Any() ? Math.Round(devices.Average(d => d.Temperature), 1) : 0,
+                ModeDistribution   = devices
+                    .GroupBy(d => d.Mode)
+                    .ToDictionary(g => g.Key, g => g.Count()),
+                TypeDistribution   = devices
+                    .GroupBy(d => d.Type)
+                    .ToDictionary(g => g.Key, g => g.Count()),
+                Devices            = devices.OrderBy(d => d.Id).ToList()
+            };
+
+            return View(vm);
+        }
+
         // GET /devices → lijst van alle devices
         public async Task<IActionResult> Index()
         {
