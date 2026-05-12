@@ -65,5 +65,25 @@ namespace HvacMock.UI.Models
     {
         public string? Ref { get; set; }
         public bool Settable { get; set; }
+        public TemperatureControlValue? Value { get; set; }
+    }
+
+    public class TemperatureControlValue
+    {
+        public Dictionary<string, OperationModeSetpoints> OperationModes { get; set; } = new();
+    }
+
+    public class OperationModeSetpoints
+    {
+        public Dictionary<string, Setpoint> Setpoints { get; set; } = new();
+    }
+
+    public class Setpoint
+    {
+        public bool Settable { get; set; }
+        public double Value { get; set; }
+        public double MinValue { get; set; }
+        public double MaxValue { get; set; }
+        public double StepValue { get; set; }
     }
 }

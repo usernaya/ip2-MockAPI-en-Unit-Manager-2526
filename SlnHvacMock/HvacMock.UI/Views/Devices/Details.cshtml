@@ -5,6 +5,9 @@
 
     // Zoek het climateControl management point op (index 1)
     var climate = Model.ManagementPoints.FirstOrDefault(m => m.ManagementPointType == "climateControl");
+
+    // TemperatureControl setpoints (alleen tonen)
+    var tempControl = climate?.TemperatureControl?.Value;
 }
 
 <div class="container mt-4">
@@ -94,6 +97,59 @@
         }
 
     </div>
+
+    @* TemperatureControl setpoints kaart *@
+    @if (tempControl != null && tempControl.OperationModes.Any())
+    {
+        <div class="col-12 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-secondary text-white fw-semibold">
+                    Temperatuurinstellingen per mode
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-sm table-striped mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Mode</th>
+                                <th>Setpoint</th>
+                                <th>Huidig</th>
+                                <th>Min</th>
+                                <th>Max</th>
+                                <th>Stap</th>
+                                <th>Aanpasbaar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var mode in tempControl.OperationModes)
+                            {
+                                foreach (var sp in mode.Value.Setpoints)
+                                {
+                                    <tr>
+                                        <td><span class="badge bg-dark">@mode.Key</span></td>
+                                        <td>@sp.Key</td>
+                                        <td>@sp.Value.Value °C</td>
+                                        <td>@sp.Value.MinValue °C</td>
+                                        <td>@sp.Value.MaxValue °C</td>
+                                        <td>@sp.Value.StepValue</td>
+                                        <td>
+                                            @if (sp.Value.Settable)
+                                            {
+                                                <span class="badge bg-success">ja</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">nee</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
 
 </div>
 
