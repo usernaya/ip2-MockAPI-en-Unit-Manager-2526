@@ -1,0 +1,57 @@
+@{
+    ViewData["Title"] = "Login";
+    Layout = null; // Geen navbar bij de loginpagina
+}
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login – HVAC Admin</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body class="bg-light">
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-4">
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white text-center py-3">
+                    <h4 class="mb-0">🔒 HVAC Admin</h4>
+                </div>
+                <div class="card-body p-4">
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger">@ViewBag.Error</div>
+                    }
+
+                    <form method="post" action="/auth/login">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Gebruikersnaam</label>
+                            <input type="text" name="username" class="form-control"
+                                   placeholder="admin" required autofocus />
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Wachtwoord</label>
+                            <input type="password" name="password" class="form-control"
+                                   placeholder="••••••••" required />
+                        </div>
+                        <button type="submit" class="btn btn-dark w-100">Inloggen</button>
+                    </form>
+
+                </div>
+            </div>
+
+            <p class="text-center text-muted mt-3 small">
+                Integration Project 2 – Inetum – Odisee
+            </p>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

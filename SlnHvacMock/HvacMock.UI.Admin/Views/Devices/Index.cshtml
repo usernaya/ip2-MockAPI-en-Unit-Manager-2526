@@ -1,0 +1,177 @@
+@model List<HvacMock.UI.Models.Device>
+
+@{
+    ViewData["Title"] = "Devices";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0">Devices</h1>
+        <a asp-action="Create" class="btn btn-success">✚ Nieuw device</a>
+    </div>
+
+    @* ── Zoek & filter balk ── *@
+    @if (Model.Count > 0)
+    {
+        <div class="card shadow-sm mb-3">
+            <div class="card-body py-2">
+                <div class="row g-2 align-items-center">
+
+                    @* Zoekbalk *@
+                    <div class="col-md-4">
+                        <input type="text" id="searchInput" class="form-control form-control-sm"
+                               placeholder="Zoek op ID of model…" />
+                    </div>
+
+                    @* Status filter *@
+                    <div class="col-auto">
+                        <div class="btn-group btn-group-sm" id="statusFilter">
+                            <button class="btn btn-outline-secondary active" data-val="">Alle status</button>
+                            <button class="btn btn-outline-success"  data-val="on">On</button>
+                            <button class="btn btn-outline-danger"   data-val="off">Off</button>
+                        </div>
+                    </div>
+
+                    @* Type filter *@
+                    <div class="col-auto">
+                        <div class="btn-group btn-group-sm" id="typeFilter">
+                            <button class="btn btn-outline-secondary active" data-val="">Alle types</button>
+                            <button class="btn btn-outline-warning"  data-val="heating">Heating</button>
+                            <button class="btn btn-outline-info"     data-val="airConditioner">Airco</button>
+                            <button class="btn btn-outline-primary"  data-val="cooling">Cooling</button>
+                        </div>
+                    </div>
+
+                    @* Reset *@
+                    <div class="col-auto ms-auto">
+                        <button id="resetFilters" class="btn btn-sm btn-link text-muted">
+                            ✕ Reset filters
+                        </button>
+                        <span id="rowCount" class="ms-2 text-muted small"></span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info">
+            Geen devices gevonden. Maak een nieuw device aan via de knop hierboven.
+        </div>
+    }
+    else
+    {
+        <table class="table table-striped table-hover align-middle" id="devicesTable">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Model</th>
+                    <th>Status</th>
+                    <th>Mode</th>
+                    <th>Temperatuur</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model)
+                {
+                    <tr data-id="@d.Id.ToLower()"
+                        data-model="@d.DeviceModel.ToLower()"
+                        data-status="@d.Status"
+                        data-type="@d.Type">
+
+                        <td><code>@d.Id</code></td>
+                        <td>@d.Type</td>
+                        <td>@d.DeviceModel</td>
+                        <td>
+                            <span class="badge @(d.Status == "on" ? "bg-success" : "bg-danger")">
+                                @d.Status
+                            </span>
+                        </td>
+                        <td>@d.Mode</td>
+                        <td>@d.Temperature °C</td>
+                        <td class="text-end">
+                            <a class="btn btn-primary btn-sm"
+                               asp-action="Details" asp-route-id="@d.Id">Details</a>
+
+                            <form asp-action="Delete" method="post" class="d-inline"
+                                  onsubmit="return confirm('Device @d.Id verwijderen?')">
+                                <input type="hidden" name="id" value="@d.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm">Verwijder</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+</div>
+
+@section Scripts {
+<script>
+    const rows       = Array.from(document.querySelectorAll('#devicesTable tbody tr'));
+    const searchInput = document.getElementById('searchInput');
+    const rowCount    = document.getElementById('rowCount');
+
+    let activeStatus = '';
+    let activeType   = '';
+
+    function applyFilters() {
+        const q = searchInput ? searchInput.value.trim().toLowerCase() : '';
+        let visible = 0;
+
+        rows.forEach(row => {
+            const matchSearch = !q || row.dataset.id.includes(q) || row.dataset.model.includes(q);
+            const matchStatus = !activeStatus || row.dataset.status === activeStatus;
+            const matchType   = !activeType   || row.dataset.type   === activeType;
+
+            const show = matchSearch && matchStatus && matchType;
+            row.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+
+        if (rowCount) rowCount.textContent = `${visible} van ${rows.length}`;
+    }
+
+    // Zoekbalk
+    if (searchInput) searchInput.addEventListener('input', applyFilters);
+
+    // Filtergroepen (status / type)
+    function wireFilterGroup(groupId, setter) {
+        const group = document.getElementById(groupId);
+        if (!group) return;
+        group.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                group.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                setter(btn.dataset.val);
+                applyFilters();
+            });
+        });
+    }
+
+    wireFilterGroup('statusFilter', v => activeStatus = v);
+    wireFilterGroup('typeFilter',   v => activeType   = v);
+
+    // Reset
+    const resetBtn = document.getElementById('resetFilters');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            if (searchInput) searchInput.value = '';
+            activeStatus = '';
+            activeType   = '';
+            document.querySelectorAll('#statusFilter button, #typeFilter button').forEach(b => {
+                b.classList.toggle('active', b.dataset.val === '');
+            });
+            applyFilters();
+        });
+    }
+
+    applyFilters(); // initieel tellen
+</script>
+}

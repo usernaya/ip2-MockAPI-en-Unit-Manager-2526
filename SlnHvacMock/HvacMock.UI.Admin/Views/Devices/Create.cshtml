@@ -1,0 +1,58 @@
+@{
+    ViewData["Title"] = "Nieuw device";
+}
+
+<div class="container mt-4">
+
+    <a asp-controller="Devices" asp-action="Index" class="btn btn-secondary mb-3">
+        ← Terug
+    </a>
+
+    <h2 class="mb-4">Nieuw device aanmaken</h2>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <div class="card shadow-sm" style="max-width: 500px;">
+        <div class="card-body p-4">
+            <form method="post" action="/devices/create">
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Device ID</label>
+                    <input type="text" name="id" class="form-control"
+                           placeholder="bv. device-3" required />
+                    <div class="form-text">Moet uniek zijn.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Type</label>
+                    <select name="type" class="form-select" required>
+                        <option value="heating">heating</option>
+                        <option value="airConditioner">airConditioner</option>
+                        <option value="cooling">cooling</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Model</label>
+                    <input type="text" name="deviceModel" class="form-control"
+                           placeholder="bv. Altherma" required />
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">
+                    ✚ Device aanmaken
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="alert alert-info mt-3" style="max-width: 500px;">
+        <small>
+            De gateway en climateControl management points worden automatisch aangemaakt
+            met standaardwaarden (temperatuur 21°C, mode: heating, status: on).
+        </small>
+    </div>
+
+</div>
