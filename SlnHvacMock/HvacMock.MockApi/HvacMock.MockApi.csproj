@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HvacMock.Application\HvacMock.Application.csproj" />
+    <ProjectReference Include="..\HvacMock.Domain\HvacMock.Domain.csproj" />
     <ProjectReference Include="..\HvacMock.Infrastructure\HvacMock.Infrastructure.csproj" />
   </ItemGroup>
 

@@ -1,6 +1,6 @@
 using HvacMock.AdminApi.DTOs;
-using HvacMock.AdminApi.Models;
-using HvacMock.AdminApi.Services;
+using HvacMock.Domain.Devices;
+using HvacMock.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,7 +46,11 @@ namespace HvacMock.AdminApi.Controllers
         {
             try
             {
-                Device device = await _service.CreateAsync(request);
+                Device device = await _service.CreateAsync(
+                    request.Id,
+                    request.Type,
+                    request.DeviceModel,
+                    request.ManagementPoints);
                 return CreatedAtAction(nameof(GetById), new { id = device.Id }, device);
             }
             catch (ArgumentException ex)
@@ -62,7 +66,7 @@ namespace HvacMock.AdminApi.Controllers
         {
             try
             {
-                Device? updatedDevice = await _service.PatchAsync(id, request);
+                Device? updatedDevice = await _service.PatchAsync(id, request.Path, request.Value);
                 if (updatedDevice == null)
                 {
                     return NotFound(new { message = $"Device '{id}' niet gevonden." });

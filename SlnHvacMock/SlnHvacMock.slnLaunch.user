@@ -9,6 +9,14 @@
       {
         "Path": "HvacMock.UI\\HvacMock.UI.csproj",
         "Action": "Start"
+      },
+      {
+        "Path": "HvacMock.AdminApi\\HvacMock.AdminApi.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "HvacMock.UI.Admin\\HvacMock.UI.Admin.csproj",
+        "Action": "Start"
       }
     ]
   }

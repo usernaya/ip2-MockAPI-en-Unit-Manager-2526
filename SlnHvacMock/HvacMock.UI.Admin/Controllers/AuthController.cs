@@ -22,10 +22,10 @@ namespace HvacMock.UI.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            // Als er al een token is, ga dan direct naar de devices lijst
+            // Als er al een token is, ga dan direct naar het dashboard
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString(TokenSessionKey)))
             {
-                return RedirectToAction("Index", "Devices");
+                return RedirectToAction("Dashboard", "Devices");
             }
 
             return View();
@@ -56,7 +56,7 @@ namespace HvacMock.UI.Controllers
             // Token opslaan in sessie
             HttpContext.Session.SetString(TokenSessionKey, token);
 
-            return RedirectToAction("Index", "Devices");
+            return RedirectToAction("Dashboard", "Devices");
         }
 
         // GET /auth/logout → token verwijderen en terug naar login

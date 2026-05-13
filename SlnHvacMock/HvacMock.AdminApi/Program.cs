@@ -1,7 +1,8 @@
 using Amazon.DynamoDBv2;
 using Amazon.Runtime;
-using HvacMock.AdminApi.Repositories;
-using HvacMock.AdminApi.Services;
+using HvacMock.Application.Repositories;
+using HvacMock.Application.Services;
+using HvacMock.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -54,6 +55,7 @@ builder.Services.AddAuthorization();
 
 // Dependency injection
 builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
+builder.Services.AddScoped<IDeviceService, DeviceService>();
 builder.Services.AddScoped<IAdminDeviceService, AdminDeviceService>();
 
 // CORS: open voor demo (UI kan op elke poort draaien)

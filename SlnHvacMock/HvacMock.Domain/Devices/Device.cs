@@ -1,8 +1,6 @@
-using HvacMock.Domain.Devices;
-
-namespace HvacMock.AdminApi.DTOs
+namespace HvacMock.Domain.Devices
 {
-    public class CreateDeviceRequest
+    public class Device
     {
         public string Id { get; set; } = string.Empty;
         public string Type { get; set; } = string.Empty;

@@ -1,8 +1,9 @@
 using Amazon.DynamoDBv2;
 using Amazon.Runtime;
-using HvacMock.MockApi.Infrastructure;
-using HvacMock.MockApi.Repositories;
-using HvacMock.MockApi.Services;
+using HvacMock.Application.Repositories;
+using HvacMock.Application.Services;
+using HvacMock.Infrastructure.Repositories;
+using HvacMock.Infrastructure.Seeding;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -111,7 +112,8 @@ app.MapControllers();
 using (IServiceScope scope = app.Services.CreateScope())
 {
     DataSeeder seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-    await seeder.SeedAsync();
+    string seedPath = Path.Combine(app.Environment.ContentRootPath, "Infrastructure", "seed-devices.json");
+    await seeder.SeedAsync(seedPath);
 }
 
 app.Run();

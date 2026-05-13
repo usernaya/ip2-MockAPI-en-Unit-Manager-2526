@@ -1,190 +1,443 @@
+@using System.Globalization
 @model HvacMock.UI.Models.Device
 
 @{
     ViewData["Title"] = "Device detail";
+    var deviceTypeLabels = new Dictionary<string, string>
+    {
+        ["heating"] = "Heating unit",
+        ["airConditioner"] = "Airco",
+        ["heatPump"] = "Heat pump",
+        ["commercialHVAC"] = "Commercial HVAC"
+    };
 
-    // Zoek het climateControl management point op (index 1)
-    var climate = Model.ManagementPoints.FirstOrDefault(m => m.ManagementPointType == "climateControl");
+    var primary = Model.ManagementPoints.FirstOrDefault(m => m.ManagementPointType == "climateControl")
+        ?? Model.ManagementPoints.FirstOrDefault(m => m.ManagementPointCategory == "primary");
+    var primaryIndex = primary == null ? -1 : Model.ManagementPoints.IndexOf(primary);
+    var tempControl = primary?.TemperatureControl?.Value;
+    var isOn = Model.Status == "on";
+    var deviceType = Model.Type ?? string.Empty;
+    var displayType = deviceTypeLabels.ContainsKey(deviceType) ? deviceTypeLabels[deviceType] : deviceType;
+    string ModeLabel(string mode) => mode switch
+    {
+        "heating" => "Heating",
+        "cooling" => "Cooling",
+        "auto" => "Auto",
+        _ => mode
+    };
+    var userEditableFlags = new List<bool>();
 
-    // TemperatureControl setpoints (alleen tonen)
-    var tempControl = climate?.TemperatureControl?.Value;
+    if (primary?.OnOffMode != null)
+    {
+        userEditableFlags.Add(primary.OnOffMode.Settable);
+    }
+
+    if (primary?.OperationMode != null)
+    {
+        userEditableFlags.Add(primary.OperationMode.Settable);
+    }
+
+    if (primary?.TargetTemperature != null)
+    {
+        userEditableFlags.Add(primary.TargetTemperature.Settable);
+    }
+
+    if (tempControl?.OperationModes != null)
+    {
+        userEditableFlags.AddRange(tempControl.OperationModes
+            .SelectMany(mode => mode.Value.Setpoints.Values)
+            .Select(setpoint => setpoint.Settable));
+    }
+
+    var isUserReadonly = userEditableFlags.Count > 0 && userEditableFlags.All(flag => !flag);
 }
 
-<div class="container mt-4">
-
-    <a asp-action="Index" class="btn btn-secondary mb-3">← Terug</a>
-
-    <h2 class="mb-4">Device: <code>@Model.Id</code></h2>
-
-    <div class="row">
-
-        @* Info-kaart *@
-        <div class="col-md-5 mb-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-header bg-dark text-white fw-semibold">Informatie</div>
-                <div class="card-body">
-                    <p><strong>ID:</strong> @Model.Id</p>
-                    <p><strong>Type:</strong> @Model.Type</p>
-                    <p><strong>Model:</strong> @Model.DeviceModel</p>
-
-                    @if (climate != null)
-                    {
-                        <hr />
-                        <p>
-                            <strong>Status:</strong>
-                            <span class="badge @(Model.Status == "on" ? "bg-success" : "bg-danger")">
-                                @Model.Status
-                            </span>
-                        </p>
-                        <p><strong>Mode:</strong> @Model.Mode</p>
-                        <p><strong>Temperatuur:</strong> @Model.Temperature °C</p>
-                    }
-                </div>
-            </div>
-        </div>
-
-        @* PATCH-formulier *@
-        @if (climate != null)
-        {
-            <div class="col-md-5 mb-4">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white fw-semibold">
-                        Waarde aanpassen
-                    </div>
-                    <div class="card-body">
-                        <form asp-action="Patch" method="post">
-                            <input type="hidden" name="id" value="@Model.Id" />
-
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Veld</label>
-                                <select name="field" class="form-select" id="fieldSelect">
-                                    <option value="targetTemperature">Doeltemperatuur</option>
-                                    <option value="operationMode">Mode</option>
-                                    <option value="onOffMode">Aan/Uit</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Nieuwe waarde</label>
-
-                                @* Temperatuur invoer *@
-                                <input type="number" name="value" id="tempInput"
-                                       class="form-control"
-                                       step="0.5" min="12" max="30"
-                                       value="@Model.Temperature" />
-
-                                @* Mode dropdown *@
-                                <select name="value" id="modeSelect" class="form-select" style="display:none;">
-                                    <option value="heating">heating</option>
-                                    <option value="cooling">cooling</option>
-                                    <option value="auto">auto</option>
-                                </select>
-
-                                @* Aan/Uit dropdown *@
-                                <select name="value" id="onOffSelect" class="form-select" style="display:none;">
-                                    <option value="on">on</option>
-                                    <option value="off">off</option>
-                                </select>
-                            </div>
-
-                            <button type="submit" class="btn btn-success w-100">
-                                Opslaan
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        }
-
+<div class="app-page detail-page admin-config-page">
+    <div class="detail-nav">
+        <a asp-action="Index" class="ghost-link">
+            <i class="bi bi-arrow-left"></i>
+            Devices
+        </a>
+        <span>@Model.Id</span>
     </div>
 
-    @* TemperatureControl setpoints kaart *@
-    @if (tempControl != null && tempControl.OperationModes.Any())
+    @if (TempData["Success"] is string success)
     {
-        <div class="col-12 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-secondary text-white fw-semibold">
-                    Temperatuurinstellingen per mode
-                </div>
-                <div class="card-body p-0">
-                    <table class="table table-sm table-striped mb-0">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Mode</th>
-                                <th>Setpoint</th>
-                                <th>Huidig</th>
-                                <th>Min</th>
-                                <th>Max</th>
-                                <th>Stap</th>
-                                <th>Aanpasbaar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var mode in tempControl.OperationModes)
-                            {
-                                foreach (var sp in mode.Value.Setpoints)
-                                {
-                                    <tr>
-                                        <td><span class="badge bg-dark">@mode.Key</span></td>
-                                        <td>@sp.Key</td>
-                                        <td>@sp.Value.Value °C</td>
-                                        <td>@sp.Value.MinValue °C</td>
-                                        <td>@sp.Value.MaxValue °C</td>
-                                        <td>@sp.Value.StepValue</td>
-                                        <td>
-                                            @if (sp.Value.Settable)
-                                            {
-                                                <span class="badge bg-success">ja</span>
-                                            }
-                                            else
-                                            {
-                                                <span class="badge bg-secondary">nee</span>
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="app-alert success">
+            <i class="bi bi-check2-circle"></i>
+            @success
         </div>
     }
 
-</div>
-
-@section Scripts {
-<script>
-    // Toon het juiste invoerveld op basis van het gekozen veld
-    const fieldSelect = document.getElementById('fieldSelect');
-    const tempInput   = document.getElementById('tempInput');
-    const modeSelect  = document.getElementById('modeSelect');
-    const onOffSelect = document.getElementById('onOffSelect');
-
-    function updateInputVisibility() {
-        tempInput.style.display   = 'none';
-        modeSelect.style.display  = 'none';
-        onOffSelect.style.display = 'none';
-
-        // Zet disabled zodat alleen het zichtbare veld wordt meegestuurd
-        tempInput.disabled   = true;
-        modeSelect.disabled  = true;
-        onOffSelect.disabled = true;
-
-        const selected = fieldSelect.value;
-        if (selected === 'targetTemperature') {
-            tempInput.style.display = 'block';
-            tempInput.disabled = false;
-        } else if (selected === 'operationMode') {
-            modeSelect.style.display = 'block';
-            modeSelect.disabled = false;
-        } else if (selected === 'onOffMode') {
-            onOffSelect.style.display = 'block';
-            onOffSelect.disabled = false;
-        }
+    @if (TempData["Error"] is string error)
+    {
+        <div class="app-alert error">
+            <i class="bi bi-exclamation-triangle"></i>
+            @error
+        </div>
     }
 
-    fieldSelect.addEventListener('change', updateInputVisibility);
-    updateInputVisibility(); // Initieel uitvoeren
-</script>
-}
+    <section class="device-console">
+        <div class="console-main">
+            <div>
+                <span class="eyebrow">HVAC admin console</span>
+                <h1>@Model.DeviceModel</h1>
+                <p>@displayType &middot; @Model.Id</p>
+            </div>
+        </div>
+
+        <div class="console-temp">
+            <span>@Model.Temperature.ToString("0.#", CultureInfo.InvariantCulture)<sup>&deg;C</sup></span>
+            <small>target</small>
+        </div>
+
+        <span class="status-pill @(isOn ? "is-on" : "is-off")">
+            <i class="bi bi-power"></i>
+            @Model.Status
+        </span>
+    </section>
+
+    @if (primary != null && primaryIndex >= 0)
+    {
+        <section class="modern-panel profile-panel">
+            <div class="panel-header">
+                <div>
+                    <span class="eyebrow">Device profile</span>
+                    <h2>Basic configuration</h2>
+                </div>
+            </div>
+
+            <div class="detail-list">
+                <form asp-action="Patch" method="post" class="detail-list-row">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <input type="hidden" name="field" value="deviceModel" />
+                    <label class="field-label">Device model</label>
+                    <div class="inline-editor">
+                        <input class="modern-input" name="value" value="@Model.DeviceModel" />
+                        <button class="modern-button icon-button" type="submit" title="Save device model">
+                            <i class="bi bi-check2"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <form asp-action="Patch" method="post" class="detail-list-row">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <input type="hidden" name="field" value="type" />
+                    <label class="field-label">Device type</label>
+                    <div class="inline-editor">
+                        <select class="modern-select" name="value">
+                            @if (!new[] { "heating", "airConditioner", "heatPump", "commercialHVAC" }.Contains(Model.Type))
+                            {
+                                <option value="@Model.Type" selected>@Model.Type (legacy)</option>
+                            }
+                            @foreach (var option in new[] { "heating", "airConditioner", "heatPump", "commercialHVAC" })
+                            {
+                                <option value="@option" selected="@(option == Model.Type)">
+                                    @(deviceTypeLabels.ContainsKey(option) ? deviceTypeLabels[option] : option)
+                                </option>
+                            }
+                        </select>
+                        <button class="modern-button icon-button" type="submit" title="Save device type">
+                            <i class="bi bi-check2"></i>
+                        </button>
+                    </div>
+                </form>
+
+                @if (primary.Name != null)
+                {
+                    <form asp-action="Patch" method="post" class="detail-list-row">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <input type="hidden" name="field" value="managementPoints[@primaryIndex].name.value" />
+                        <label class="field-label">Location</label>
+                        <div class="inline-editor">
+                            <input class="modern-input" name="value" value="@primary.Name.Value" />
+                            <button class="modern-button icon-button" type="submit" title="Save location">
+                                <i class="bi bi-check2"></i>
+                            </button>
+                        </div>
+                    </form>
+                }
+            </div>
+        </section>
+    }
+
+    @if (primary != null && primaryIndex >= 0)
+    {
+        <section class="modern-panel runtime-panel mt-3">
+            <div class="panel-header">
+                <div>
+                    <span class="eyebrow">Runtime controls</span>
+                    <h2>Operate this device</h2>
+                </div>
+            </div>
+
+            <div class="detail-list">
+                <article class="detail-list-row">
+                    <div>
+                        <span class="field-label">Power</span>
+                        <span class="field-help">Current: @Model.Status</span>
+                    </div>
+                    <div class="choice-actions runtime-actions">
+                        @foreach (var option in primary.OnOffMode?.Values ?? new List<string>())
+                        {
+                            <form asp-action="Patch" method="post">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" name="field" value="managementPoints[@primaryIndex].onOffMode.value" />
+                                <input type="hidden" name="value" value="@option" />
+                                <button class="choice-button @(option == Model.Status ? "active" : "")" type="submit">
+                                    @option
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </article>
+
+                <form asp-action="Patch" method="post" class="detail-list-row">
+                    <div>
+                        <span class="field-label">Operation mode</span>
+                        <span class="field-help">Current: @Model.Mode</span>
+                    </div>
+                    <div class="inline-editor runtime-mode-form">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <input type="hidden" name="field" value="managementPoints[@primaryIndex].operationMode.value" />
+                        <select class="modern-select" name="value">
+                            @foreach (var option in new[] { "heating", "cooling", "auto" })
+                            {
+                                <option value="@option" selected="@(option == Model.Mode)">@option</option>
+                            }
+                        </select>
+                        <button class="modern-button" type="submit">Update</button>
+                    </div>
+                </form>
+
+                @if (primary.TargetTemperature != null)
+                {
+                    <form asp-action="Patch" method="post" class="detail-list-row">
+                        <div>
+                            <span class="field-label">Target temperature</span>
+                            <span class="field-help">
+                                @primary.TargetTemperature.MinValue.ToString("0.#", CultureInfo.InvariantCulture)-@primary.TargetTemperature.MaxValue.ToString("0.#", CultureInfo.InvariantCulture)&deg;C,
+                                step @primary.TargetTemperature.StepValue.ToString("0.#", CultureInfo.InvariantCulture)
+                            </span>
+                        </div>
+                        <div class="inline-editor runtime-temperature">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <input type="hidden" name="field" value="managementPoints[@primaryIndex].targetTemperature.value" />
+                            <input class="modern-input" type="number" name="value"
+                                   value="@primary.TargetTemperature.Value.ToString(CultureInfo.InvariantCulture)"
+                                   step="@primary.TargetTemperature.StepValue.ToString(CultureInfo.InvariantCulture)" />
+                            <button class="modern-button" type="submit">Update</button>
+                        </div>
+                    </form>
+                }
+            </div>
+        </section>
+    }
+
+    @if (tempControl != null && tempControl.OperationModes.Any() && primaryIndex >= 0)
+    {
+        <section class="modern-panel config-panel mt-3">
+            <div class="panel-header">
+                <div>
+                    <span class="eyebrow">Mode configuration</span>
+                    <h2>Setpoints and temperature limits</h2>
+                </div>
+            </div>
+
+            <div class="mode-config-grid">
+                @foreach (var mode in tempControl.OperationModes)
+                {
+                    <details class="mode-config-card">
+                        <summary class="mode-config-header">
+                            <span class="mode-pill">@ModeLabel(mode.Key)</span>
+                            <span>
+                                Temperature settings
+                                <i class="bi bi-chevron-down"></i>
+                            </span>
+                        </summary>
+
+                        @foreach (var setpoint in mode.Value.Setpoints)
+                        {
+                            var basePath = $"managementPoints[{primaryIndex}].temperatureControl.value.operationModes.{mode.Key}.setpoints.{setpoint.Key}";
+                            <div class="setpoint-row">
+                                <div class="temperature-field-list">
+                                    <form asp-action="Patch" method="post" class="temperature-field-row">
+                                        <input type="hidden" name="id" value="@Model.Id" />
+                                        <input type="hidden" name="field" value="@($"{basePath}.value")" />
+                                        <label class="field-label">Default temperature</label>
+                                        <input class="modern-input" type="number" name="value" value="@setpoint.Value.Value.ToString(CultureInfo.InvariantCulture)" step="@setpoint.Value.StepValue.ToString(CultureInfo.InvariantCulture)" />
+                                        <button class="subtle-save-button" type="submit">Save</button>
+                                    </form>
+
+                                    <form asp-action="Patch" method="post" class="temperature-field-row">
+                                        <input type="hidden" name="id" value="@Model.Id" />
+                                        <input type="hidden" name="field" value="@($"{basePath}.minValue")" />
+                                        <label class="field-label">Minimum</label>
+                                        <input class="modern-input" type="number" name="value" value="@setpoint.Value.MinValue.ToString(CultureInfo.InvariantCulture)" step="0.1" />
+                                        <button class="subtle-save-button" type="submit">Save</button>
+                                    </form>
+
+                                    <form asp-action="Patch" method="post" class="temperature-field-row">
+                                        <input type="hidden" name="id" value="@Model.Id" />
+                                        <input type="hidden" name="field" value="@($"{basePath}.maxValue")" />
+                                        <label class="field-label">Maximum</label>
+                                        <input class="modern-input" type="number" name="value" value="@setpoint.Value.MaxValue.ToString(CultureInfo.InvariantCulture)" step="0.1" />
+                                        <button class="subtle-save-button" type="submit">Save</button>
+                                    </form>
+
+                                    <form asp-action="Patch" method="post" class="temperature-field-row">
+                                        <input type="hidden" name="id" value="@Model.Id" />
+                                        <input type="hidden" name="field" value="@($"{basePath}.stepValue")" />
+                                        <label class="field-label">Step</label>
+                                        <input class="modern-input" type="number" name="value" value="@setpoint.Value.StepValue.ToString(CultureInfo.InvariantCulture)" step="0.1" />
+                                        <button class="subtle-save-button" type="submit">Save</button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    </details>
+                }
+            </div>
+        </section>
+    }
+
+    <details class="modern-panel advanced-panel mt-3">
+        <summary>
+            <span>
+                <span class="eyebrow">Advanced configuration</span>
+                <strong>User editability metadata</strong>
+            </span>
+            <i class="bi bi-chevron-down"></i>
+        </summary>
+
+        <div class="advanced-content">
+            @if (primary != null && primaryIndex >= 0)
+            {
+                <section class="advanced-section">
+                    <div class="advanced-section-title">
+                        <h2>User access</h2>
+                    </div>
+                    <div class="access-row">
+                        <span class="metadata-pill">
+                            @(isUserReadonly ? "Read-only for users" : "Editable for users")
+                        </span>
+                        <div class="inline-actions">
+                            <form asp-action="SetUserReadonly" method="post">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" name="isReadonly" value="true" />
+                                <button class="ghost-link" type="submit">
+                                    Set read-only
+                                </button>
+                            </form>
+                            <form asp-action="SetUserReadonly" method="post">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" name="isReadonly" value="false" />
+                                <button class="manage-link px-3" type="submit">
+                                    Make editable
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            }
+
+            @if (primary != null && primaryIndex >= 0)
+            {
+                <section class="advanced-section">
+                    <div class="advanced-section-title">
+                        <h2>Primary field metadata</h2>
+                    </div>
+
+                    <div class="metadata-field-list">
+                        @if (primary.OnOffMode != null)
+                        {
+                            <form asp-action="Patch" method="post" class="metadata-field-row">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" name="field" value="managementPoints[@primaryIndex].onOffMode.settable" />
+                                <label class="field-label">Power settable</label>
+                                <select class="modern-select" name="value">
+                                    <option value="true" selected="@(primary.OnOffMode.Settable)">true</option>
+                                    <option value="false" selected="@(!primary.OnOffMode.Settable)">false</option>
+                                </select>
+                                <button class="subtle-save-button" type="submit">Save</button>
+                            </form>
+                        }
+
+                        @if (primary.OperationMode != null)
+                        {
+                            <form asp-action="Patch" method="post" class="metadata-field-row">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" name="field" value="managementPoints[@primaryIndex].operationMode.settable" />
+                                <label class="field-label">Mode settable</label>
+                                <select class="modern-select" name="value">
+                                    <option value="true" selected="@(primary.OperationMode.Settable)">true</option>
+                                    <option value="false" selected="@(!primary.OperationMode.Settable)">false</option>
+                                </select>
+                                <button class="subtle-save-button" type="submit">Save</button>
+                            </form>
+                        }
+
+                        @if (primary.TargetTemperature != null)
+                        {
+                            <form asp-action="Patch" method="post" class="metadata-field-row">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" name="field" value="managementPoints[@primaryIndex].targetTemperature.settable" />
+                                <label class="field-label">Target settable</label>
+                                <select class="modern-select" name="value">
+                                    <option value="true" selected="@(primary.TargetTemperature.Settable)">true</option>
+                                    <option value="false" selected="@(!primary.TargetTemperature.Settable)">false</option>
+                                </select>
+                                <button class="subtle-save-button" type="submit">Save</button>
+                            </form>
+                        }
+                    </div>
+                </section>
+            }
+
+            @if (tempControl != null && tempControl.OperationModes.Any() && primaryIndex >= 0)
+            {
+                <section class="advanced-section">
+                    <div class="advanced-section-title">
+                        <h2>Setpoint metadata</h2>
+                    </div>
+
+                    <div class="metadata-field-list">
+                        @foreach (var mode in tempControl.OperationModes)
+                        {
+                            foreach (var setpoint in mode.Value.Setpoints)
+                            {
+                                var basePath = $"managementPoints[{primaryIndex}].temperatureControl.value.operationModes.{mode.Key}.setpoints.{setpoint.Key}";
+                                <form asp-action="Patch" method="post" class="metadata-field-row">
+                                    <input type="hidden" name="id" value="@Model.Id" />
+                                    <input type="hidden" name="field" value="@($"{basePath}.settable")" />
+                                    <label class="field-label">@ModeLabel(mode.Key) temperature settable</label>
+                                    <select class="modern-select" name="value">
+                                        <option value="true" selected="@(setpoint.Value.Settable)">true</option>
+                                        <option value="false" selected="@(!setpoint.Value.Settable)">false</option>
+                                    </select>
+                                    <button class="subtle-save-button" type="submit">Save</button>
+                                </form>
+                            }
+                        }
+                    </div>
+                </section>
+            }
+        </div>
+    </details>
+
+    <section class="modern-panel mt-3">
+        <div class="panel-header">
+            <div>
+                <span class="eyebrow">Danger zone</span>
+                <h2>Remove device</h2>
+            </div>
+            <form asp-action="Delete" method="post" onsubmit="return confirm('Delete device @Model.Id?')">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button type="submit" class="danger-link px-3">
+                    <i class="bi bi-trash3"></i>
+                    Delete
+                </button>
+            </form>
+        </div>
+    </section>
+</div>
