@@ -1,0 +1,58 @@
+# .NET build
+bin/
+obj/
+
+# user files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# IDE folders
+.vs/
+.vscode/
+
+# logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Claude AI config
+.claude/
+
+# ASP.NET local config
+appsettings.Development.json
+appsettings.Local.json
+
+# secrets
+secrets.json
+
+# build output
+publish/
+dist/
+out/
+
+# node (if used)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# docker env
+.env
+docker-compose.override.yml
+
+# test results
+TestResults/
+coverage/
+
+# jetbrains
+.idea/
+
+# temp files
+*.swp
+*.tmp

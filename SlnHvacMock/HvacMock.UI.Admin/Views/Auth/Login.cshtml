@@ -1,0 +1,51 @@
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - HVAC Admin</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <main class="auth-shell">
+        <section class="auth-card">
+            <div class="auth-mark">
+                <i class="bi bi-shield-lock"></i>
+            </div>
+            <span class="eyebrow">HVAC Admin</span>
+            <h1>Sign in</h1>
+            <p class="mb-4">Access the management side for devices and test data.</p>
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="app-alert error">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    @ViewBag.Error
+                </div>
+            }
+
+            <form method="post" action="/auth/login" class="form-stack">
+                <div>
+                    <label class="field-label">Username</label>
+                    <input type="text" name="username" class="modern-input" placeholder="admin" required autofocus />
+                </div>
+                <div>
+                    <label class="field-label">Password</label>
+                    <input type="password" name="password" class="modern-input" placeholder="Password" required />
+                </div>
+                <button type="submit" class="modern-button">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    Login
+                </button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

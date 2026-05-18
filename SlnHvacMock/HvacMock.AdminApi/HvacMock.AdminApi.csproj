@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="4.0.18" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.*" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HvacMock.Application\HvacMock.Application.csproj" />
+    <ProjectReference Include="..\HvacMock.Domain\HvacMock.Domain.csproj" />
+    <ProjectReference Include="..\HvacMock.Infrastructure\HvacMock.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

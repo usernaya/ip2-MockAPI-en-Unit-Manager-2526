@@ -1,0 +1,79 @@
+@{
+    ViewData["Title"] = "New device";
+    var suggestedId = ViewBag.SuggestedId as string ?? "device-1";
+    var attemptedId = ViewBag.AttemptedId as string;
+    var selectedType = ViewBag.SelectedType as string ?? "airConditioner";
+    var deviceModel = ViewBag.DeviceModel as string;
+    var displayName = ViewBag.DisplayName as string;
+}
+
+<div class="app-page form-page">
+    <div class="detail-nav">
+        <a asp-controller="Devices" asp-action="Index" class="ghost-link">
+            <i class="bi bi-arrow-left"></i>
+            Devices
+        </a>
+        <span>Create device</span>
+    </div>
+
+    <section class="dashboard-hero">
+        <div>
+            <span class="eyebrow">Admin setup</span>
+            <h1>Create test device</h1>
+            <p>Create the device shell, then configure runtime behavior and setpoints.</p>
+        </div>
+        <div class="device-icon icon-admin">
+            <i class="bi bi-plus-lg"></i>
+        </div>
+    </section>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="app-alert error">
+            <i class="bi bi-exclamation-triangle"></i>
+            @ViewBag.Error
+        </div>
+    }
+
+    <section class="modern-panel">
+        <form method="post" action="/devices/create" class="form-stack">
+            <div>
+                <label class="field-label">Device ID</label>
+                <input type="text" name="id" class="modern-input" value="@(attemptedId ?? suggestedId)" required />
+            </div>
+
+            <div>
+                <label class="field-label">Type</label>
+                <select name="type" class="modern-select" required>
+                    <option value="heating" selected="@(selectedType == "heating")">Heating unit</option>
+                    <option value="airConditioner" selected="@(selectedType == "airConditioner")">airConditioner</option>
+                    <option value="heatPump" selected="@(selectedType == "heatPump")">heatPump</option>
+                    <option value="commercialHVAC" selected="@(selectedType == "commercialHVAC")">commercialHVAC</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="field-label">Model</label>
+                <input type="text" name="deviceModel" class="modern-input" placeholder="Altherma" value="@deviceModel" required />
+            </div>
+
+            <div>
+                <label class="field-label">Location</label>
+                <input type="text" name="displayName" class="modern-input" placeholder="Reception" value="@displayName" />
+                <div class="field-help">Optional. If left empty, the model name is used.</div>
+            </div>
+
+            <div class="generated-summary">
+                <strong>Generated automatically</strong>
+                <span>management points</span>
+                <span>safe runtime defaults</span>
+                <span>mode setpoints</span>
+            </div>
+
+            <button type="submit" class="modern-button">
+                <i class="bi bi-check2"></i>
+                Create and configure
+            </button>
+        </form>
+    </section>
+</div>

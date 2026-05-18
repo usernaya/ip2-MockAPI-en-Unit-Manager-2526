@@ -1,39 +1,96 @@
-﻿@model List<HvacMock.UI.Models.Device>
+@model List<HvacMock.UI.Models.Devices.Device>
 
 @{
     ViewData["Title"] = "Devices";
+    var onlineCount = Model.Count(device =>
+        device.ManagementPoints.FirstOrDefault(mp => mp.ManagementPointCategory == "primary")?.OnOffMode?.Value == "on");
 }
 
-<div class="container mt-4">
-    <h1 class="mb-4">Devices</h1>
+<div class="app-page">
+    <section class="dashboard-hero">
+        <div>
+            <span class="eyebrow">HVAC Control</span>
+            <h1>Smart climate dashboard</h1>
+            <p>Manage indoor units, operating modes, and target temperatures from one clean overview.</p>
+        </div>
+        <div class="hero-metrics">
+            <div>
+                <span>@Model.Count</span>
+                <small>units</small>
+            </div>
+            <div>
+                <span>@onlineCount</span>
+                <small>running</small>
+            </div>
+        </div>
+    </section>
 
-    <table class="table table-striped table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Status</th>
-                <th>Mode</th>
-                <th>Temperature</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var d in Model)
-            {
-                <tr>
-                    <td>@d.Id</td>
-                    <td>
-                        <span class="badge @(d.Status == "on" ? "bg-success" : "bg-danger")">
-                            @d.Status
+    <section class="device-grid">
+        @foreach (var device in Model)
+        {
+            var primary = device.ManagementPoints.FirstOrDefault(mp => mp.ManagementPointCategory == "primary");
+            var isOn = primary?.OnOffMode?.Value == "on";
+            var type = device.Type?.ToLowerInvariant() ?? "";
+            var iconClass = type.Contains("air") || type.Contains("condition") ? "bi-snow" : "bi-thermometer-sun";
+            var iconBg = type.Contains("air") || type.Contains("condition") ? "icon-ac" : "icon-heat";
+            var roomName = primary?.Name?.Value ?? "Primary zone";
+            var hasEditableControls = primary?.OnOffMode?.Settable == true
+                || primary?.OperationMode?.Settable == true
+                || primary?.TargetTemperature?.Settable == true
+                || primary?.TemperatureControl?.Value.OperationModes.Values.Any(mode =>
+                    mode.Setpoints.Values.Any(setpoint => setpoint.Settable)) == true;
+
+            <article class="device-card">
+                <div class="device-card-top">
+                    <div class="device-icon @iconBg">
+                        <i class="bi @iconClass"></i>
+                    </div>
+                    @if (primary?.OnOffMode != null)
+                    {
+                        <span class="status-pill @(isOn ? "is-on" : "is-off")">
+                            <i class="bi bi-power"></i>
+                            @primary.OnOffMode.Value
                         </span>
-                    </td>
-                    <td>@d.Mode</td>
-                    <td>@d.Temperature °C</td>
-                    <td>
-                        <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@d.Id">Details</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                    }
+                    @if (primary != null && !hasEditableControls)
+                    {
+                        <span class="readonly-pill">
+                            <i class="bi bi-lock"></i>
+                            Read only
+                        </span>
+                    }
+                </div>
+
+                <div class="device-copy">
+                    <span>@device.Id</span>
+                    <h2>@device.DeviceModel</h2>
+                    <p>@roomName · @device.Type</p>
+                </div>
+
+                <div class="device-readout">
+                    @if (primary?.TargetTemperature != null)
+                    {
+                        <strong>@primary.TargetTemperature.Value.ToString("0.#")<sup>°C</sup></strong>
+                    }
+                    else
+                    {
+                        <strong class="muted-value">--</strong>
+                    }
+
+                    @if (primary?.OperationMode != null)
+                    {
+                        <span class="mode-pill">
+                            <i class="bi bi-wind"></i>
+                            @primary.OperationMode.Value
+                        </span>
+                    }
+                </div>
+
+                <a class="manage-link" asp-action="Details" asp-route-id="@device.Id">
+                    Manage unit
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </article>
+        }
+    </section>
 </div>

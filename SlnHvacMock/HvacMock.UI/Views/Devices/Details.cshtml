@@ -1,58 +1,266 @@
-﻿@model HvacMock.UI.Models.Device
+@model HvacMock.UI.Models.Devices.Device
 
 @{
-    ViewData["Title"] = "Detail";
+    ViewData["Title"] = "Manage Device";
+    var primary = Model.ManagementPoints.FirstOrDefault(mp => mp.ManagementPointCategory == "primary");
+    var primaryIndex = primary == null ? -1 : Model.ManagementPoints.IndexOf(primary);
+    var isOn = primary?.OnOffMode?.Value == "on";
+    var type = Model.Type?.ToLowerInvariant() ?? "";
+    var iconClass = type.Contains("air") || type.Contains("condition") ? "bi-snow" : "bi-thermometer-sun";
+    var iconBg = type.Contains("air") || type.Contains("condition") ? "icon-ac" : "icon-heat";
+    var roomName = primary?.Name?.Value ?? "Primary zone";
+    var onOffField = $"managementPoints[{primaryIndex}].onOffMode.value";
+    var modeField = $"managementPoints[{primaryIndex}].operationMode.value";
+    var tempField = $"managementPoints[{primaryIndex}].targetTemperature.value";
+    var temperatureModes = primary?.TemperatureControl?.Value.OperationModes.Keys.ToList() ?? new List<string>();
+    var activeMode = primary?.OperationMode?.Value ?? temperatureModes.FirstOrDefault() ?? string.Empty;
+    var hasEditableControls = primary?.OnOffMode?.Settable == true
+        || primary?.OperationMode?.Settable == true
+        || primary?.TargetTemperature?.Settable == true
+        || primary?.TemperatureControl?.Value.OperationModes.Values.Any(mode =>
+            mode.Setpoints.Values.Any(setpoint => setpoint.Settable)) == true;
 }
 
-<div class="container mt-4">
-
-    <a asp-action="Index" class="btn btn-secondary mb-3">Terug</a>
-
-    <h2 class="mb-4">Device Details</h2>
-
-    <div class="card mb-4">
-        <div class="card-body">
-            <p><strong>ID:</strong> @Model.Id</p>
-            <p>
-                <strong>Status:</strong>
-                <span class="badge @(Model.Status == "on" ? "bg-success" : "bg-danger")">
-                    @Model.Status
-                </span>
-            </p>
-            <p><strong>Mode:</strong> @Model.Mode</p>
-            <p><strong>Temperature:</strong> @Model.Temperature °C</p>
-        </div>
+<div class="app-page detail-page">
+    <div class="detail-nav">
+        <a asp-action="Index" class="ghost-link">
+            <i class="bi bi-arrow-left"></i>
+            Devices
+        </a>
+        <span>@Model.Id</span>
     </div>
 
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            Waarde aanpassen
+    @if (TempData["Success"] != null)
+    {
+        <div class="app-alert success">
+            <i class="bi bi-check-circle"></i>
+            @TempData["Success"]
         </div>
-        <div class="card-body">
-            <form asp-action="Patch" method="post">
-                <input type="hidden" name="id" value="@Model.Id" />
+    }
 
-                <div class="mb-3">
-                    <label class="form-label">Veld</label>
-                    <select name="field" class="form-select" id="fieldSelect">
-                        <option value="status">Status</option>
-                        <option value="mode">Mode</option>
-                        <option value="temperature">Temperature</option>
-                    </select>
+    @if (TempData["Error"] != null)
+    {
+        <div class="app-alert error">
+            <i class="bi bi-exclamation-triangle"></i>
+            @TempData["Error"]
+        </div>
+    }
+
+    <section class="device-console">
+        <div class="console-main">
+            <div class="device-icon @iconBg">
+                <i class="bi @iconClass"></i>
+            </div>
+            <div>
+                <span class="eyebrow">@roomName</span>
+                <h1>@Model.DeviceModel</h1>
+                <p>@Model.Type &middot; climate control</p>
+            </div>
+        </div>
+
+        <div class="console-temp">
+            @if (primary?.TargetTemperature != null)
+            {
+                <span>@primary.TargetTemperature.Value.ToString("0.#")<sup>&deg;C</sup></span>
+                <small>target</small>
+            }
+        </div>
+
+        @if (primary?.OnOffMode != null)
+        {
+            <span class="status-pill @(isOn ? "is-on" : "is-off")">
+                <i class="bi bi-power"></i>
+                @primary.OnOffMode.Value
+            </span>
+        }
+
+        @if (primary != null && !hasEditableControls)
+        {
+            <span class="readonly-pill">
+                <i class="bi bi-lock"></i>
+                Read only
+            </span>
+        }
+    </section>
+
+    @if (primary != null && primaryIndex >= 0)
+    {
+        <section class="control-list">
+            @if (primary.OnOffMode != null)
+            {
+                <article class="control-row">
+                    <div class="control-meta">
+                        <i class="bi bi-power"></i>
+                        <div>
+                            <h2>Power</h2>
+                            <p>
+                                Current state: @primary.OnOffMode.Value
+                                @if (!primary.OnOffMode.Settable)
+                                {
+                                    <span class="readonly-text">Read only</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <div class="choice-actions">
+                        @foreach (var option in primary.OnOffMode.Values)
+                        {
+                            <form asp-action="Patch" method="post">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" name="field" value="@onOffField" />
+                                <input type="hidden" name="value" value="@option" />
+                                <button class="choice-button @(option == primary.OnOffMode.Value ? "active" : "")"
+                                        type="submit"
+                                        disabled="@(option == primary.OnOffMode.Value || !primary.OnOffMode.Settable)">
+                                    @option
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </article>
+            }
+
+            @if (primary.OperationMode != null)
+            {
+                <article class="control-row">
+                    <div class="control-meta">
+                        <i class="bi bi-wind"></i>
+                        <div>
+                            <h2>Mode</h2>
+                            <p>
+                                Allowed values from the API
+                                @if (!primary.OperationMode.Settable)
+                                {
+                                    <span class="readonly-text">Read only</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <div class="choice-actions">
+                        @foreach (var option in primary.OperationMode.Values)
+                        {
+                            <form asp-action="Patch" method="post">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" name="field" value="@modeField" />
+                                <input type="hidden" name="value" value="@option" />
+                                <button class="choice-button @(option == primary.OperationMode.Value ? "active" : "")"
+                                        type="submit"
+                                        disabled="@(option == primary.OperationMode.Value || !primary.OperationMode.Settable)">
+                                    @option
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </article>
+            }
+
+            @if (primary.TargetTemperature != null)
+            {
+                <article class="control-row">
+                    <div class="control-meta">
+                        <i class="bi bi-thermometer-half"></i>
+                        <div>
+                            <h2>Target temperature (current mode)</h2>
+                            <p>
+                                Bereik: @primary.TargetTemperature.MinValue.ToString("0.#")-@primary.TargetTemperature.MaxValue.ToString("0.#") &deg;C,
+                                stap @primary.TargetTemperature.StepValue.ToString("0.#")
+                                @if (!primary.TargetTemperature.Settable)
+                                {
+                                    <span class="readonly-text">Read only</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <form asp-action="Patch" method="post" class="temperature-form">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <input type="hidden" name="field" value="@tempField" />
+                        <input type="number"
+                               name="value"
+                               value="@primary.TargetTemperature.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                               min="@primary.TargetTemperature.MinValue.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                               max="@primary.TargetTemperature.MaxValue.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                               step="@primary.TargetTemperature.StepValue.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                               disabled="@(!primary.TargetTemperature.Settable)" />
+                        <button class="btn btn-primary" type="submit" disabled="@(!primary.TargetTemperature.Settable)">
+                            Update
+                        </button>
+                    </form>
+                </article>
+            }
+
+            @if (primary.TemperatureControl?.Value.OperationModes.Count > 0)
+            {
+                <div class="eyebrow">Temperature per mode</div>
+                <div class="choice-actions">
+                    @foreach (var mode in temperatureModes)
+                    {
+                        <button class="choice-button @(mode == activeMode ? "active" : "")"
+                                type="button"
+                                data-temperature-tab="@mode">
+                            @mode
+                        </button>
+                    }
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Nieuwe waarde</label>
+                @foreach (var mode in temperatureModes)
+                {
+                    if (primary.TemperatureControl.Value.OperationModes.TryGetValue(mode, out var modeSetpoints)
+                        && modeSetpoints.Setpoints.TryGetValue("roomTemperature", out var roomTemperature))
+                    {
+                        var modeTemperatureField = $"managementPoints[{primaryIndex}].temperatureControl.value.operationModes.{mode}.setpoints.roomTemperature.value";
 
-                    <select id="valueDropdown" class="form-select"></select>
-                    <input type="number" id="valueInput" class="form-control" style="display:none;" step="0.5" min="12" max="30" />
-                </div>
-
-                <button type="submit" class="btn btn-success w-100">
-                    Update
-                </button>
-            </form>
-        </div>
-    </div>
-
+                        <article class="control-row" data-temperature-panel="@mode" hidden="@(mode != activeMode)">
+                            <div class="control-meta">
+                                <i class="bi bi-thermometer-half"></i>
+                                <div>
+                                    <h2>@mode room temperature</h2>
+                                    <p>
+                                        Bereik: @roomTemperature.MinValue.ToString("0.#")-@roomTemperature.MaxValue.ToString("0.#") &deg;C,
+                                        stap @roomTemperature.StepValue.ToString("0.#")
+                                        @if (!roomTemperature.Settable)
+                                        {
+                                            <span class="readonly-text">Read only</span>
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                            <form asp-action="Patch" method="post" class="temperature-form">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" name="field" value="@modeTemperatureField" />
+                                <input type="number"
+                                       name="value"
+                                       value="@roomTemperature.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                                       min="@roomTemperature.MinValue.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                                       max="@roomTemperature.MaxValue.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                                       step="@roomTemperature.StepValue.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                                       required
+                                       disabled="@(!roomTemperature.Settable)" />
+                                <button class="btn btn-primary" type="submit" disabled="@(!roomTemperature.Settable)">
+                                    Update
+                                </button>
+                            </form>
+                        </article>
+                    }
+                }
+            }
+        </section>
+    }
 </div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll("[data-temperature-tab]").forEach(tab => {
+            tab.addEventListener("click", () => {
+                const selectedMode = tab.dataset.temperatureTab;
+
+                document.querySelectorAll("[data-temperature-tab]").forEach(item => {
+                    item.classList.toggle("active", item.dataset.temperatureTab === selectedMode);
+                });
+
+                document.querySelectorAll("[data-temperature-panel]").forEach(panel => {
+                    panel.hidden = panel.dataset.temperaturePanel !== selectedMode;
+                });
+            });
+        });
+    </script>
+}

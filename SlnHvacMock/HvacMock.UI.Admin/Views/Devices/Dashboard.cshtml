@@ -1,0 +1,196 @@
+@model HvacMock.UI.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+
+    var modeColors = new Dictionary<string, string>
+    {
+        ["heating"] = "#9a5b19",
+        ["cooling"] = "#2f6f8f",
+        ["auto"] = "#4f5f6f",
+        ["-"] = "#64717f"
+    };
+
+    var typeColors = new Dictionary<string, string>
+    {
+        ["airConditioner"] = "#2f6f8f",
+        ["heatPump"] = "#7b6d42",
+        ["commercialHVAC"] = "#4f5f6f"
+    };
+}
+
+<div class="app-page">
+    <section class="dashboard-hero">
+        <div>
+            <span class="eyebrow">Admin dashboard</span>
+            <h1>Shared HVAC state</h1>
+            <p>Monitor the current DynamoDB device state before managing devices or test configurations.</p>
+        </div>
+        <div class="hero-metrics">
+            <div>
+                <span>@Model.TotalDevices</span>
+                <small>devices</small>
+            </div>
+            <div>
+                <span>@Model.ActiveDevices</span>
+                <small>active</small>
+            </div>
+        </div>
+    </section>
+
+    <section class="device-grid mb-3">
+        <article class="stat-card">
+            <strong>@Model.TotalDevices</strong>
+            <span>Total devices</span>
+        </article>
+        <article class="stat-card">
+            <strong>@Model.ActiveDevices</strong>
+            <span>On</span>
+        </article>
+        <article class="stat-card">
+            <strong>@Model.InactiveDevices</strong>
+            <span>Off or inactive</span>
+        </article>
+        <article class="stat-card">
+            <strong>@Model.AverageTemperature.ToString("0.#")<sup>&deg;C</sup></strong>
+            <span>Average target</span>
+        </article>
+    </section>
+
+    @if (Model.TotalDevices > 0)
+    {
+        <section class="device-grid mb-3">
+            <article class="chart-panel">
+                <div class="panel-header">
+                    <div>
+                        <span class="eyebrow">Modes</span>
+                        <h2>Mode distribution</h2>
+                    </div>
+                </div>
+                <canvas id="modeChart" style="max-height:240px;"></canvas>
+            </article>
+
+            <article class="chart-panel">
+                <div class="panel-header">
+                    <div>
+                        <span class="eyebrow">Types</span>
+                        <h2>Type distribution</h2>
+                    </div>
+                </div>
+                <canvas id="typeChart" style="max-height:240px;"></canvas>
+            </article>
+
+            <article class="modern-panel">
+                <div class="panel-header">
+                    <div>
+                        <span class="eyebrow">Mode counts</span>
+                        <h2>Current mix</h2>
+                    </div>
+                </div>
+                <div class="control-list">
+                    @foreach (var mode in Model.ModeDistribution)
+                    {
+                        <div class="device-readout">
+                            <span class="mode-pill">@mode.Key</span>
+                            <strong>@mode.Value</strong>
+                        </div>
+                    }
+                </div>
+            </article>
+        </section>
+    }
+
+    <section class="modern-panel">
+        <div class="panel-header">
+            <div>
+                <span class="eyebrow">Inventory</span>
+                <h2>All devices</h2>
+                <p>Open a device to configure its current values.</p>
+            </div>
+            <a asp-action="Index" class="ghost-link">
+                Manage devices
+                <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        @if (Model.Devices.Count == 0)
+        {
+            <div class="empty-state">No devices found.</div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table-modern">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Type</th>
+                            <th>Model</th>
+                            <th>Status</th>
+                            <th>Mode</th>
+                            <th>Temp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var device in Model.Devices)
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@device.Id">
+                                        <code>@device.Id</code>
+                                    </a>
+                                </td>
+                                <td>@device.Type</td>
+                                <td>@device.DeviceModel</td>
+                                <td>
+                                    <span class="status-pill @(device.Status == "on" ? "is-on" : "is-off")">
+                                        <i class="bi bi-power"></i>
+                                        @device.Status
+                                    </span>
+                                </td>
+                                <td><span class="mode-pill">@device.Mode</span></td>
+                                <td>@device.Temperature.ToString("0.#") &deg;C</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </section>
+</div>
+
+@section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    const modeLabels = [@Html.Raw(string.Join(",", Model.ModeDistribution.Keys.Select(k => $"'{k}'")))];
+    const modeData = [@string.Join(",", Model.ModeDistribution.Values)];
+    const modeColors = [@Html.Raw(string.Join(",", Model.ModeDistribution.Keys.Select(k => {
+        var c = modeColors.ContainsKey(k) ? modeColors[k] : "#6b7a90";
+        return $"'{c}'";
+    })))];
+
+    const typeLabels = [@Html.Raw(string.Join(",", Model.TypeDistribution.Keys.Select(k => $"'{k}'")))];
+    const typeData = [@string.Join(",", Model.TypeDistribution.Values)];
+    const typeColors = [@Html.Raw(string.Join(",", Model.TypeDistribution.Keys.Select(k => {
+        var c = typeColors.ContainsKey(k) ? typeColors[k] : "#6b7a90";
+        return $"'{c}'";
+    })))];
+
+    const chartOptions = {
+        plugins: { legend: { position: "bottom", labels: { boxWidth: 12, usePointStyle: true } } },
+        cutout: "62%"
+    };
+
+    new Chart(document.getElementById("modeChart"), {
+        type: "doughnut",
+        data: { labels: modeLabels, datasets: [{ data: modeData, backgroundColor: modeColors }] },
+        options: chartOptions
+    });
+
+    new Chart(document.getElementById("typeChart"), {
+        type: "doughnut",
+        data: { labels: typeLabels, datasets: [{ data: typeData, backgroundColor: typeColors }] },
+        options: chartOptions
+    });
+</script>
+}

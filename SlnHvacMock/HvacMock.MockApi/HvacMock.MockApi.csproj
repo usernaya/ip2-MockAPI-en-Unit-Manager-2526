@@ -8,7 +8,20 @@
 
   <ItemGroup>
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="4.0.17.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HvacMock.Application\HvacMock.Application.csproj" />
+    <ProjectReference Include="..\HvacMock.Domain\HvacMock.Domain.csproj" />
+    <ProjectReference Include="..\HvacMock.Infrastructure\HvacMock.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Infrastructure\seed-devices.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,185 @@
+@model List<HvacMock.UI.Models.Device>
+
+@{
+    ViewData["Title"] = "Devices";
+    var running = Model.Count(d => d.Status == "on");
+    var typeLabels = new Dictionary<string, string>
+    {
+        ["heating"] = "Heating unit",
+        ["airConditioner"] = "Airco",
+        ["heatPump"] = "Heat pump",
+        ["commercialHVAC"] = "Commercial HVAC"
+    };
+}
+
+<div class="app-page">
+    <section class="dashboard-hero">
+        <div>
+            <span class="eyebrow">Admin inventory</span>
+            <h1>Manage HVAC devices</h1>
+            <p>Create test devices, inspect shared state, and update device values through the Admin API.</p>
+        </div>
+        <div class="hero-metrics">
+            <div>
+                <span>@Model.Count</span>
+                <small>devices</small>
+            </div>
+            <div>
+                <span>@running</span>
+                <small>running</small>
+            </div>
+        </div>
+    </section>
+
+    <section class="admin-toolbar">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search by id or model" />
+
+        <select id="statusFilter" class="modern-select" aria-label="Filter by status">
+            <option value="">All status</option>
+            <option value="on">On</option>
+            <option value="off">Off</option>
+        </select>
+
+        <select id="typeFilter" class="modern-select" aria-label="Filter by type">
+            <option value="">All types</option>
+            <option value="heating">Heating unit</option>
+            <option value="airConditioner">Airco</option>
+            <option value="heatPump">Heat pump</option>
+            <option value="commercialHVAC">Commercial HVAC</option>
+        </select>
+
+        <div class="inline-actions">
+            <button type="button" id="resetFilters" class="ghost-link">Reset</button>
+            <a asp-action="Create" class="manage-link px-3">
+                <i class="bi bi-plus-lg"></i>
+                New device
+            </a>
+        </div>
+    </section>
+
+    <div class="d-flex justify-content-end mb-3">
+        <span id="rowCount" class="metadata-pill"></span>
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <section class="modern-panel empty-state">
+            <i class="bi bi-inboxes fs-2 d-block mb-2"></i>
+            No devices found.
+        </section>
+    }
+    else
+    {
+        <section class="modern-panel">
+            <div class="table-responsive">
+                <table class="table-modern" id="devicesTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Model</th>
+                            <th>Status</th>
+                            <th>Mode</th>
+                            <th>Target</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var device in Model)
+                        {
+                            var isOn = device.Status == "on";
+
+                            <tr class="admin-device-row"
+                                data-id="@device.Id.ToLowerInvariant()"
+                                data-model="@device.DeviceModel.ToLowerInvariant()"
+                                data-status="@device.Status"
+                                data-type="@device.Type">
+                                <td><span class="metadata-pill">@device.Id</span></td>
+                                <td><strong>@device.DeviceModel</strong></td>
+                                <td>
+                                    <span class="status-pill @(isOn ? "is-on" : "is-off")">
+                                        <i class="bi bi-power"></i>
+                                        @device.Status
+                                    </span>
+                                </td>
+                                <td><span class="mode-pill">@device.Mode</span></td>
+                                <td>@device.Temperature.ToString("0.#") &deg;C</td>
+                                <td>
+                                    <div class="inline-actions">
+                                        <a class="ghost-link" asp-action="Details" asp-route-id="@device.Id">
+                                            Details
+                                        </a>
+                                        <form asp-action="Delete" method="post" onsubmit="return confirm('Delete device @device.Id?')">
+                                            <input type="hidden" name="id" value="@device.Id" />
+                                            <button type="submit" class="danger-link px-3">
+                                                <i class="bi bi-trash3"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    }
+</div>
+
+@section Scripts {
+<script>
+    const rows = Array.from(document.querySelectorAll(".admin-device-row"));
+    const searchInput = document.getElementById("searchInput");
+    const rowCount = document.getElementById("rowCount");
+
+    let activeStatus = "";
+    let activeType = "";
+
+    function applyFilters() {
+        const q = searchInput ? searchInput.value.trim().toLowerCase() : "";
+        let visible = 0;
+
+        rows.forEach(row => {
+            const matchSearch = !q || row.dataset.id.includes(q) || row.dataset.model.includes(q);
+            const matchStatus = !activeStatus || row.dataset.status === activeStatus;
+            const matchType = !activeType || row.dataset.type === activeType;
+            const show = matchSearch && matchStatus && matchType;
+
+            row.hidden = !show;
+            if (show) visible++;
+        });
+
+        if (rowCount) rowCount.textContent = `${visible} of ${rows.length}`;
+    }
+
+    function wireFilterSelect(selectId, setter) {
+        const select = document.getElementById(selectId);
+        if (!select) return;
+
+        select.addEventListener("change", () => {
+            setter(select.value);
+            applyFilters();
+        });
+    }
+
+    if (searchInput) searchInput.addEventListener("input", applyFilters);
+
+    wireFilterSelect("statusFilter", value => activeStatus = value);
+    wireFilterSelect("typeFilter", value => activeType = value);
+
+    const resetBtn = document.getElementById("resetFilters");
+    if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+            if (searchInput) searchInput.value = "";
+            activeStatus = "";
+            activeType = "";
+            const statusFilter = document.getElementById("statusFilter");
+            const typeFilter = document.getElementById("typeFilter");
+            if (statusFilter) statusFilter.value = "";
+            if (typeFilter) typeFilter.value = "";
+            applyFilters();
+        });
+    }
+
+    applyFilters();
+</script>
+}

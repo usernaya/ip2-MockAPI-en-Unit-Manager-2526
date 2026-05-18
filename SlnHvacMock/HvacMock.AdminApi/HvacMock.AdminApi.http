@@ -1,0 +1,6 @@
+@HvacMock.AdminApi_HostAddress = http://localhost:5194
+
+GET {{HvacMock.AdminApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
