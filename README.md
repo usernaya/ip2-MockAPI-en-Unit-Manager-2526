@@ -6,7 +6,7 @@
 
 Dit project is gebouwd voor **Inetum** in het kader van Integration Project 2 (Toegepaste Informatica, 2025–2026).
 
-HVAC staat voor **Heating, Ventilation and Air Conditioning** — toestellen zoals verwarmingssystemen, airco's en ventilatie-units. De echte Daikin gateway API was niet beschikbaar, dus hebben we een **mock API** gebouwd die zich gedraagt als de echte API.
+HVAC staat voor **Heating, Ventilation and Air Conditioning**, toestellen zoals verwarmingssystemen, airco's en ventilatie-units. We hebben een **mock API** gebouwd die zich gedraagt als een echte.
 
 Het platform bestaat uit:
 - **MockApi** — simuleert de echte klantgerichte Daikin API (1-op-1 JSON-structuur)
@@ -164,9 +164,9 @@ managementPoints[1].temperatureControl.value.operationModes.auto.setpoints.roomT
 | `roomTemperature.value` (setpoint) | number | min: 12, max: 30, step: 0.5 |
 | `name.value` | string | max. 50 tekens |
 
-> !! Als `settable: false` → PATCH geeft `400 Bad Request`  
-> !! Als waarde buiten min/max/step → `400 Bad Request`  
-> !! Als waarde niet in `values` lijst → `400 Bad Request`
+> Let op: Als `settable: false` → PATCH geeft `400 Bad Request`
+> Let op: Als waarde buiten min/max/step → `400 Bad Request`
+> Let op: Als waarde niet in `values` lijst → `400 Bad Request`
 
 ---
 
