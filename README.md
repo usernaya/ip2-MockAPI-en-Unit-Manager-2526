@@ -2,6 +2,21 @@
 
 > Lokaal HVAC mock platform · C# / .NET 8 · DynamoDB Local · Docker
 
+## Over dit project
+
+Dit project is gebouwd voor **Inetum** in het kader van Integration Project 2 (Toegepaste Informatica, 2025–2026).
+
+HVAC staat voor **Heating, Ventilation and Air Conditioning** — toestellen zoals verwarmingssystemen, airco's en ventilatie-units. De echte Daikin gateway API was niet beschikbaar, dus hebben we een **mock API** gebouwd die zich gedraagt als de echte API.
+
+Het platform bestaat uit:
+- **MockApi** — simuleert de echte klantgerichte Daikin API (1-op-1 JSON-structuur)
+- **AdminApi** — beheertool om devices aan te maken, aan te passen en te verwijderen
+- **Gebruikers-UI** — webinterface die de MockApi aanspreekt
+- **Admin UI** — webinterface die de AdminApi aanspreekt
+- **DynamoDB** — centrale database zodat de state gedeeld is voor alle gebruikers
+
+> Groep 8: Aya, Bunyamine, Hamid, Turhan, Zineddine
+
 ---
 
 ## Opstarten
