@@ -57,7 +57,7 @@
         </div>
     </section>
 
-    <div class="d-flex justify-content-end mb-3">
+    <div class="toolbar-meta">
         <span id="rowCount" class="metadata-pill"></span>
     </div>
 
@@ -93,17 +93,17 @@
                                 data-model="@device.DeviceModel.ToLowerInvariant()"
                                 data-status="@device.Status"
                                 data-type="@device.Type">
-                                <td><span class="metadata-pill">@device.Id</span></td>
-                                <td><strong>@device.DeviceModel</strong></td>
-                                <td>
+                                <td data-label="ID"><span class="metadata-pill">@device.Id</span></td>
+                                <td data-label="Model"><strong>@device.DeviceModel</strong></td>
+                                <td data-label="Status">
                                     <span class="status-pill @(isOn ? "is-on" : "is-off")">
                                         <i class="bi bi-power"></i>
                                         @device.Status
                                     </span>
                                 </td>
-                                <td><span class="mode-pill">@device.Mode</span></td>
-                                <td>@device.Temperature.ToString("0.#") &deg;C</td>
-                                <td>
+                                <td data-label="Mode"><span class="mode-pill">@device.Mode</span></td>
+                                <td data-label="Target">@device.Temperature.ToString("0.#") &deg;C</td>
+                                <td data-label="Actions">
                                     <div class="inline-actions">
                                         <a class="ghost-link" asp-action="Details" asp-route-id="@device.Id">
                                             Details
